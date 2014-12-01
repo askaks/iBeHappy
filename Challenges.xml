@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Challenges>
+  <Challenge>
+ <Title>An Apple A Day...</Title>
+    <Points>100</Points>
+    <LanguageRating>1</LanguageRating>
+    <RiskFactor>1</RiskFactor>
+	    <AgeMin>8</AgeMin>
+    <AgeMax>200</AgeMax>
+    <Tasks>
+              <Task>
+      <Message>Think when was the last time you ate an apple.</Message>
+      <TaskPoints>10</TaskPoints>
+                        </Task>
+              <Task>
+      <Message>Find an apple.</Message>
+      <TaskPoints>10</TaskPoints>
+                        </Task>
+              <Task>
+      <Message>Look at it.  Smell it.</Message>
+      <TaskPoints>20</TaskPoints>
+                        </Task>
+              <Task>
+      <Message>If it has a sticker, lookup the place on the sticker.</Message>
+      <TaskPoints>30</TaskPoints>
+                        </Task>
+              <Task>
+      <Message>Eat it.  And enjoy it.</Message>
+      <TaskPoints>20</TaskPoints>
+                        </Task>
+    </Tasks>
+    <ExcludeWorkHappy>false</ExcludeWorkHappy>
+    <ExcludeRelationshipHappy>false</ExcludeRelationshipHappy>
+    <ExcludeSchoolHappy>false</ExcludeSchoolHappy>
+    <ExcludeFilters>
+      <ExcludeGenderFilters />
+      <ExcludeInterestedInFilters />
+      <ExcludeSchoolLevelFilters />
+      <ExcludeWorkLevelFilters />
+      <ExcludeRelationshipLevelFilters />
+      <ExcludeKidFilters />
+      <ExcludePetFilters />
+    </ExcludeFilters>
+  </Challenge>
+  <Challenge Title="A Walk To Remember">
+    <Points>200</Points>
+    <LanguageRating>1</LanguageRating>
+    <RiskFactor>1</RiskFactor>
+	    <AgeMin>8</AgeMin>
+    <AgeMax>200</AgeMax>
+
+    <Tasks>
+      <Task>
+        <Message>Go for a walk today.  Anywhere.  On a sidewalk, in the woods, or on the bike trail.</Message>
+        <TaskPoints>30</TaskPoints>
+        <Message>What do you see?  Who do you see?  When was the last time you paid attention, were mindful, of your surroundings?</Message>
+        <TaskPoints>20</TaskPoints>
+      </Task>
+    </Tasks>
+    <ExcludeWorkHappy>false</ExcludeWorkHappy>
+    <ExcludeRelationshipHappy>false</ExcludeRelationshipHappy>
+    <ExcludeSchoolHappy>false</ExcludeSchoolHappy>
+    <ExcludeFilters>
+      <ExcludeGenderFilters />
+      <ExcludeInterestedInFilters />
+      <ExcludeSchoolLevelFilters />
+      <ExcludeWorkLevelFilters />
+      <ExcludeRelationshipLevelFilters />
+      <ExcludeKidFilters />
+      <ExcludePetFilters />
+    </ExcludeFilters>
+  </Challenge>
+</Challenges>
