@@ -25,8 +25,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
 @property (weak, nonatomic) IBOutlet UITextView *signupWelcomeMessageText;
 
-- (IBAction)createNonFBAction:(id)sender;
+- (IBAction)createNativeIBeHappyProfileButtonClick:(id)sender;
 - (IBAction)backAction:(id)sender;
-- (IBAction)twitterLogin:(id)sender;
+- (IBAction)twitterLoginButtonClick:(id)sender;
 
 @end

@@ -46,7 +46,7 @@
 // SIGNING UP using Facebook
 //
 //***********************************************************
-- (IBAction)facebookSignUp:(id)sender
+- (IBAction)facebookSignUpButtonClick:(id)sender
 {
     NSArray *permissions = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
     
@@ -229,7 +229,7 @@
     [self setPassText:nil];
     [super viewDidUnload];
 }
-- (IBAction)createNonFBAction:(id)sender {
+- (IBAction)createNativeIBeHappyProfileButtonClick:(id)sender {
     _backButton.hidden = false;
     _createButton.hidden = false;
     _nonFBNameLabel.hidden = false;
@@ -249,7 +249,7 @@
     _nonFBView.hidden = true;
 }
 
-- (IBAction)twitterLogin:(id)sender {
+- (IBAction)twitterLoginButtonClick:(id)sender {
 //    [PFTwitterUtils initializeWithConsumerKey:@"yDHgblzLpcoFlgkX245oAwu45" consumerSecret:@"Kw6Ly9LvOFX0NFPWKc6Jd5g2IMx9ptrksJlOnThgLsJsMANRZa"];
     
     [PFTwitterUtils logInWithBlock:^(PFUser *user, NSError *error) {
