@@ -8,10 +8,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HappyHomeViewController">
             <connections>
                 <outlet property="helloUserText" destination="39" id="41"/>
-                <outlet property="nextLevelButton" destination="71" id="73"/>
-                <outlet property="restartButton" destination="77" id="83"/>
+                <outlet property="nextLevelButton" destination="QC5-dp-jK6" id="BfB-7V-efr"/>
+                <outlet property="restartButton" destination="eCK-9e-l3q" id="poS-L5-PRS"/>
                 <outlet property="startOverButton" destination="wMb-pe-9ea" id="xYq-sn-xCV"/>
-                <outlet property="updateProfileButton" destination="67" id="68"/>
+                <outlet property="updateProfileButton" destination="2H8-BH-WOj" id="2KT-uo-NsW"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -58,25 +58,6 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="42">
-                    <rect key="frame" x="51" y="233" width="100" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Start Over" backgroundImage="ButtonBiggerOrangeHighRaisedButton.png">
-                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                    </state>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="77">
-                    <rect key="frame" x="169" y="277" width="78" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="Restart" backgroundImage="GreyHighRaisedButton.png">
-                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <color key="titleShadowColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="RestartChallengesAction:" destination="-1" eventType="touchUpInside" id="84"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="19" userLabel="Button - Score">
                     <rect key="frame" x="204" y="433" width="43" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -90,18 +71,6 @@
                     </state>
                     <connections>
                         <action selector="Score:" destination="-1" eventType="touchUpInside" id="21"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="71">
-                    <rect key="frame" x="146" y="232" width="101" height="46"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="Next Level" backgroundImage="DirtyCyanHighRaisedButton.png">
-                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <color key="titleShadowColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="JumpToNextLevel:" destination="-1" eventType="touchUpInside" id="74"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="12" userLabel="Button - Reminders">
@@ -146,15 +115,19 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="67">
-                    <rect key="frame" x="46" y="277" width="130" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Update Profile" backgroundImage="DirtyLimeHighRaisedButton.png">
-                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="63" userLabel="Button- Help">
+                    <rect key="frame" x="264" y="433" width="43" height="29"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" image="colored help button.png">
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
                     <connections>
-                        <action selector="UpdateProfile:" destination="-1" eventType="touchUpInside" id="70"/>
+                        <action selector="Help:" destination="-1" eventType="touchUpInside" id="66"/>
                     </connections>
                 </button>
                 <navigationBar contentMode="scaleToFill" barStyle="black" id="75">
@@ -185,29 +158,44 @@
                     <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="20"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="63">
-                    <rect key="frame" x="264" y="433" width="43" height="29"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" image="colored help button.png">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="Help:" destination="-1" eventType="touchUpInside" id="66"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wMb-pe-9ea">
-                    <rect key="frame" x="40" y="190" width="46" height="30"/>
+                    <rect key="frame" x="61" y="238" width="85" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Button">
+                    <state key="normal" title="Start" backgroundImage="ButtonBiggerOrangeHighRaisedButton.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="StartingOver:" destination="-1" eventType="touchUpInside" id="VPt-zK-CAA"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="2H8-BH-WOj">
+                    <rect key="frame" x="70" y="284" width="66" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Update" backgroundImage="ButtonBiggerPinkGradientHighRaisedButton.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="UpdateProfile:" destination="-1" eventType="touchUpInside" id="lIf-VH-OUi"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eCK-9e-l3q">
+                    <rect key="frame" x="154" y="277" width="93" height="43"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Restart" backgroundImage="ButtonBiggerLimeDifferentGradientHighRaisedButton.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="RestartChallengesAction:" destination="-1" eventType="touchUpInside" id="qcA-4o-Kgt"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QC5-dp-jK6">
+                    <rect key="frame" x="145" y="233" width="102" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Next Level" backgroundImage="CyanHighRaisedButton.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="JumpToNextLevel:" destination="-1" eventType="touchUpInside" id="Sva-y6-e17"/>
                     </connections>
                 </button>
             </subviews>
@@ -223,11 +211,12 @@
     <resources>
         <image name="3d bar chart.png" width="16" height="16"/>
         <image name="BottomBannerGreen.png" width="16" height="16"/>
+        <image name="ButtonBiggerLimeDifferentGradientHighRaisedButton.png" width="194" height="78"/>
         <image name="ButtonBiggerOrangeHighRaisedButton.png" width="192" height="80"/>
+        <image name="ButtonBiggerPinkGradientHighRaisedButton.png" width="187" height="79"/>
+        <image name="CyanHighRaisedButton.png" width="192" height="80"/>
         <image name="DirtyCyanHighRaisedButton.png" width="192" height="80"/>
-        <image name="DirtyLimeHighRaisedButton.png" width="192" height="80"/>
         <image name="FinalFaceWhiteInsetBeveledSmooth.png" width="509" height="497"/>
-        <image name="GreyHighRaisedButton.png" width="192" height="80"/>
         <image name="Icon.png" width="57" height="57"/>
         <image name="MiddleBackgroundWhiteHalfRound.png" width="760" height="980"/>
         <image name="Notes.png" width="760" height="980"/>
