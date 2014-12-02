@@ -302,24 +302,24 @@
     if(displayStatus == profileProblem)
     {
         self.challengeTitleLabel.text = @"No Challenge Loaded";
-        self.forPointsLabel.text = @"0";
-        self.pointsEarnedLabel.text = @"0";
-        self.challengeStatusLabel.text = @"No Challenges Loaded because your profile is not complete!";
-        self.challengeStatusLabel.enabled = true;
-        self.challengeStatusLabel.hidden = false;
+        self.forPointsLabel.text = @"Points Worth: 0";
+        self.pointsEarnedLabel.text = @"Points Earned: 0";
+        self.challengeStatusText.text = @"No Challenges Loaded because your profile is incomplete!";
+        //self.challengeStatusText. = true;
+        self.challengeStatusText.hidden = false;
     }
     if(displayStatus == challengesProblem)
     {
         self.challengeTitleLabel.text = @"No Challenges Loaded";
-        self.forPointsLabel.text = @"0";
-        self.pointsEarnedLabel.text = @"0";
-        self.challengeStatusLabel.text = @"There was a problem loading your challenges - try setting up your profile again!";
-        self.challengeStatusLabel.enabled = true;
-        self.challengeStatusLabel.hidden = false;
+        self.forPointsLabel.text = @"Points Worth: 0";
+        self.pointsEarnedLabel.text = @"Points Earned: 0";
+        self.challengeStatusText.text = @"There was a problem loading your challenges - try setting up your profile again!";
+        //self.challengeStatusText.enabled = true;
+        self.challengeStatusText.hidden = false;
     }
     else
     {
-        self.challengeStatusLabel.hidden = true;
+        self.challengeStatusText.hidden = true;
         self.challengeTitleLabel.text = profile.todaysChallenge.title;
         self.forPointsLabel.text = [NSString stringWithFormat:@"For %ld points:", (long)profile.todaysChallenge.pointsWorth];
     }
@@ -327,19 +327,24 @@
 //This is called initially on a ViewLoad and each time a task is completed or uncompleted
 - (void)doChallengeCompletedUISetup
 {
+//    CGFloat fixedWidth = self.challengeStatusText.frame.size.width;
+//    CGFloat fixedHeight = self.challengeStatusText.frame.size.height;
     UIImage *checkImage = [UIImage imageNamed:@"CheckIcon.png"];
     self.challengeCompletedButton.enabled = true;
     [self.challengeCompletedButton setImage:checkImage forState:normal];
-    self.challengeStatusLabel.hidden = false;
-    self.challengeStatusLabel.text = @"Challenge Completed!";
-    self.challengeStatusLabel.textColor = [UIColor blueColor];
+    self.challengeStatusText.hidden = false;
+    self.challengeStatusText.text = @"Challenge Completed!";
+    //self.challengeStatusText.textColor = [UIColor blueColor];
+
+    //[self.challengeStatusText sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
+    //[self.challengeStatusText sizeThatFits:<#(CGSize)#>
     self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points Earned: %ld ", (long)(profile.todaysChallenge.pointsWorth - profile.todaysChallenge.pointsLeft)];
 }
 - (void)doChallengeIncompletedUISetup
 {
     [self.challengeCompletedButton setImage:NULL forState:normal];
     self.challengeCompletedButton.enabled = true;
-    self.challengeStatusLabel.hidden = true;
+    self.challengeStatusText.hidden = true;
     self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points Earned: %ld ", (long)(profile.todaysChallenge.pointsWorth - profile.todaysChallenge.pointsLeft)];
 }
 

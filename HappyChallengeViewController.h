@@ -121,6 +121,7 @@
 @property enum status {profileProblem, challengesProblem, good, otherProblem};
 //@property enum status currentStatus;
 @property (weak, nonatomic) IBOutlet UILabel *challengeStatusLabel;
+@property (weak, nonatomic) IBOutlet UITextView *challengeStatusText;
 
 - (IBAction)goBack;
 - (IBAction)Profile:(id)sender;
