@@ -113,10 +113,13 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeFullTaskText;
 @property (weak, nonatomic) IBOutlet ChallengeTaskButton *doneFullTaskButton;
 @property (weak, nonatomic) IBOutlet UIButton *challengeCompletedButton;
+@property (weak, nonatomic) IBOutlet UILabel *challengeTitleLabel;
 
 
 @property bool completedGatheringChallenges;
 @property NSInteger countOfChallenges;
+@property enum status {profileProblem, challengesProblem, good, otherProblem};
+//@property enum status currentStatus;
 @property (weak, nonatomic) IBOutlet UILabel *challengeStatusLabel;
 
 - (IBAction)goBack;
@@ -127,7 +130,7 @@
 - (IBAction)Help:(id)sender;
 - (IBAction)isCompletedChange:(id)sender;
 
-- (BOOL)shouldAddChallenge;
+//- (BOOL)shouldAddChallenge;
 
 - (void)shuffle;
 

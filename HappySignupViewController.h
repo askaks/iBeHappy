@@ -7,9 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-//#import <Social/Social.h>
-//#import <Accounts/Accounts.h>
+#import "HappyProfile.h"
 
 
 @interface HappySignupViewController : UIViewController
@@ -24,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
 @property (weak, nonatomic) IBOutlet UITextView *signupWelcomeMessageText;
+@property (nonatomic, retain) HappyProfile *profile;
 
 - (IBAction)createNativeIBeHappyProfileButtonClick:(id)sender;
 - (IBAction)backAction:(id)sender;

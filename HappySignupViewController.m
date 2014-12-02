@@ -13,7 +13,7 @@
 
 #import "HappyStartViewController.h"
 
-
+#import "HappyProfile.h"
 
 @interface HappySignupViewController ()
 
@@ -49,7 +49,9 @@
 - (IBAction)facebookSignUpButtonClick:(id)sender
 {
     NSArray *permissions = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
-    
+    PFUser *user = [PFUser user];
+    [PFUser logOut];
+   // user = [PFUser user];
     [PFFacebookUtils logInWithPermissions:permissions block:^(PFUser *user, NSError *error) {
         if (!user)
         {
@@ -83,7 +85,7 @@
                              otherButtonTitles:nil];
             [alert show];
 
-            [self passed];
+            //[self passed];
         }
         else
         {
@@ -97,11 +99,214 @@
                              otherButtonTitles:nil];
             [alert show];
 
-            [self passed];
+            [self facebookRequestUserProfile];
+            //[self passed];
         }
     }];
 }
 
+- (IBAction)twitterLoginButtonClick:(id)sender {
+    //    [PFTwitterUtils initializeWithConsumerKey:@"yDHgblzLpcoFlgkX245oAwu45" consumerSecret:@"Kw6Ly9LvOFX0NFPWKc6Jd5g2IMx9ptrksJlOnThgLsJsMANRZa"];
+    
+    [PFTwitterUtils logInWithBlock:^(PFUser *user, NSError *error) {
+        if (![PFTwitterUtils isLinkedWithUser:user]) {
+            [PFTwitterUtils linkUser:user block:^(BOOL succeeded, NSError *error) {
+                if ([PFTwitterUtils isLinkedWithUser:user]) {
+                    NSLog(@"User logged in with Twitter!");
+                }
+            }];
+        }
+        if (user)
+        {
+            //
+            // user exist in Parse
+            //
+            [self getTwitterAccount];
+        }
+        else if (user.isNew)
+        {
+        }
+#ifdef DEBUG
+        else
+        {
+            NSLog(@"Uh oh. The user cancelled the Twitter login.");
+        }
+#endif
+    }];
+}
+- (IBAction)createNativeIBeHappyProfileButtonClick:(id)sender {
+    _backButton.hidden = false;
+    _createButton.hidden = false;
+    _nonFBNameLabel.hidden = false;
+    _nonFBNameTextfield.hidden = false;
+    _nonFBPasswordLabel.hidden = false;
+    _nonFBPasswordTextfield.hidden = false;
+    _nonFBView.hidden = false;
+}
+
+- (IBAction)backAction:(id)sender {
+    _backButton.hidden = true;
+    _createButton.hidden = true;
+    _nonFBNameLabel.hidden = true;
+    _nonFBNameTextfield.hidden = true;
+    _nonFBPasswordLabel.hidden = true;
+    _nonFBPasswordTextfield.hidden = true;
+    _nonFBView.hidden = true;
+}
+/////////////////////////////////////////////////////////////////
+//
+// Collect information about user
+//
+- (void)facebookRequestUserProfile
+{
+    if ([PFUser currentUser])
+    {
+        // Send request to Facebook
+        FBRequest *request = [FBRequest requestForMe];
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error)
+         {
+             // handle response
+             if (!error)
+             {
+                 // Parse the data received
+                 NSDictionary *userData = (NSDictionary *)result;
+                 
+                 NSString *facebookID = userData[@"id"];
+                 
+                 NSMutableDictionary *userProfile = [NSMutableDictionary dictionaryWithCapacity:10];
+                 
+                 self.profile = [[HappyProfile alloc] init];
+                 
+                 if (facebookID) {
+                     userProfile[@"facebookId"] = facebookID;
+                 }
+                 else {
+                     userProfile[@"facebookId"] = @"";
+                 }
+                 
+                 if (userData[@"name"]) {
+                     userProfile[@"name"] = userData[@"name"];
+                     self.profile.name = userData[@"name"];
+                     //self.welcomeMessageText.text = [NSString stringWithFormat:@"Welcome %@, We're creating your profile.", self.profile.name];
+                 }
+                 else {
+                     userProfile[@"name"] = @"";
+                 }
+                 
+                 if (userData[@"first_name"]) {
+                     userProfile[@"first_name"] = userData[@"first_name"];
+                     self.profile.name = userData[@"first_name"];
+                     //self.welcomeMessageText.text = [NSString stringWithFormat:@"Welcome %@, We're creating your profile.", self.profile.name];
+                 }
+                 else {
+                     userProfile[@"first_name"] = @"";
+                 }
+                 
+                 if (userData[@"gender"]) {
+                     userProfile[@"gender"] = userData[@"gender"];
+                     self.profile.sex =  userProfile[@"gender"];
+                 }
+                 else {
+                     userProfile[@"gender"] = @"";
+                 }
+                 
+                 if (userData[@"last_name"]) {
+                     userProfile[@"last_name"] = userData[@"last_name"];
+                 }
+                 else {
+                     userProfile[@"last_name"] = @"";
+                 }
+                 
+                 if (userData[@"email"]) {
+                     userProfile[@"email"] = userData[@"email"];
+                 }
+                 else {
+                     userProfile[@"email"] = @"";
+                 }
+                 
+                 if (userData[@"location"][@"name"]) {
+                     userProfile[@"location"] = userData[@"location"][@"name"];
+                     self.profile.location = userProfile[@"location"];
+                 }
+                 else {
+                     userProfile[@"location"] = @"";
+                 }
+                 
+                 if (userData[@"birthday"])
+                 {
+                     // convert date from 02/19/1960 to February 19, 1960
+                     NSDate *bday = nil;
+                     
+                     NSDateFormatter *oldDateFormat;
+                     oldDateFormat = [[NSDateFormatter alloc] init];
+                     [oldDateFormat setDateFormat:@"MM/d/yyyy"]; // e.g. 02/19/1960
+                     
+                     bday = [oldDateFormat dateFromString:userData[@"birthday"]];
+                     
+                     if (bday == nil) {
+                         bday = [NSDate date];
+                     }
+                     
+                     NSDateFormatter *newDateFormat;
+                     newDateFormat = [[NSDateFormatter alloc] init];
+                     [newDateFormat setDateFormat:@"MMMM d, yyyy"]; // e.g. February 19, 1960
+                     
+                     NSString *birthday = [newDateFormat stringFromDate:bday];
+                     
+                     self.profile.birthDay = bday;
+                     userProfile[@"birthday"] = birthday;
+                 }
+                 else {
+                     userProfile[@"birthday"] = @"";
+                 }
+                 
+                 if (userData[@"relationship_status"])
+                 {
+                     self.profile.relation = userData[@"relationship_status"];
+                     userProfile[@"relationship"] = userData[@"relationship_status"];
+                 }
+                 else
+                 {
+                     userProfile[@"relationship"] = @"";
+                 }
+                 
+                 //
+                 // get user profile picture
+                 //
+                 NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
+                 
+                 [self getProfileImageForURLString:pictureURL];
+                 
+                 if([pictureURL absoluteString])
+                 {
+                     userProfile[@"pictureURL"] = [pictureURL absoluteString];
+                 }
+                 
+                 [[PFUser currentUser] setObject:userProfile forKey:@"profile"];
+                 [[PFUser currentUser] saveInBackground];
+                 [Utility archiveProfile:self.profile];
+                 [self passed];
+             }
+             else if ([[[[error userInfo] objectForKey:@"error"] objectForKey:@"type"]
+                       isEqualToString: @"OAuthException"]) { // Since the request failed, we can check if it was due to an invalid session
+                 NSLog(@"The facebook session was invalidated");
+                 //[self logoutButtonTouchHandler:nil];
+             } else {
+                 NSLog(@"Some other error: %@", error);
+             }
+         }];
+    }
+}
+
+- (void) getProfileImageForURLString:(NSURL *)urlString
+{
+    //NSURL *url = [NSURL URLWithString:urlString];
+    NSData *imageData = [NSData dataWithContentsOfURL:urlString];
+    
+    PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:imageData];
+    
+    [[PFUser currentUser] setObject:imageFile forKey:@"userPhoto"];
+}
 
 - (IBAction)editingBegin:(id)sender
 {
@@ -211,7 +416,6 @@
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     
     UIViewController *initViewController = [storyBoard instantiateInitialViewController];
-    
     [[[[UIApplication sharedApplication] delegate] window] setRootViewController:initViewController];
     }
 }
@@ -229,55 +433,9 @@
     [self setPassText:nil];
     [super viewDidUnload];
 }
-- (IBAction)createNativeIBeHappyProfileButtonClick:(id)sender {
-    _backButton.hidden = false;
-    _createButton.hidden = false;
-    _nonFBNameLabel.hidden = false;
-    _nonFBNameTextfield.hidden = false;
-    _nonFBPasswordLabel.hidden = false;
-    _nonFBPasswordTextfield.hidden = false;
-    _nonFBView.hidden = false;
-}
 
-- (IBAction)backAction:(id)sender {
-    _backButton.hidden = true;
-    _createButton.hidden = true;
-    _nonFBNameLabel.hidden = true;
-    _nonFBNameTextfield.hidden = true;
-    _nonFBPasswordLabel.hidden = true;
-    _nonFBPasswordTextfield.hidden = true;
-    _nonFBView.hidden = true;
-}
 
-- (IBAction)twitterLoginButtonClick:(id)sender {
-//    [PFTwitterUtils initializeWithConsumerKey:@"yDHgblzLpcoFlgkX245oAwu45" consumerSecret:@"Kw6Ly9LvOFX0NFPWKc6Jd5g2IMx9ptrksJlOnThgLsJsMANRZa"];
-    
-    [PFTwitterUtils logInWithBlock:^(PFUser *user, NSError *error) {
-        if (![PFTwitterUtils isLinkedWithUser:user]) {
-            [PFTwitterUtils linkUser:user block:^(BOOL succeeded, NSError *error) {
-                if ([PFTwitterUtils isLinkedWithUser:user]) {
-                    NSLog(@"User logged in with Twitter!");
-                }
-            }];
-        }
-        if (user)
-        {
-            //
-            // user exist in Parse
-            //
-            [self getTwitterAccount];
-        }
-        else if (user.isNew)
-        {
-        }
-#ifdef DEBUG
-        else
-        {
-            NSLog(@"Uh oh. The user cancelled the Twitter login.");
-        }
-#endif
-    }];
-}
+
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -374,17 +532,6 @@
             [alert show];
         }
     }];
-}
-
-
-- (void) getProfileImageForURLString:(NSString *)urlString
-{
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSData *imageData = [NSData dataWithContentsOfURL:url];
-
-    PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:imageData];
-
-    [[PFUser currentUser] setObject:imageFile forKey:@"userPhoto"];
 }
 
 - (void)createUserProfile

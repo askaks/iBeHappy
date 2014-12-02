@@ -37,7 +37,7 @@
 
     [encoder encodeObject:_relationshipHappyExcludes forKey: @"relationshipHappyExcludes"];
     
-    [encoder encodeBool:_completed forKey:@"completed" ];
+    //[encoder encodeBool:_completed forKey:@"completed" ];
 
     [encoder encodeObject:_petsExclude forKey: @"petsExclude"];
     [encoder encodeObject:_kidsExclude forKey: @"kidsExclude"];
@@ -45,7 +45,7 @@
     [encoder encodeInteger:_minimumRiskFactor forKey: @"minimumRiskFactor"];
     [encoder encodeInteger:_language forKey: @"language"];
     
-    [encoder encodeInteger:_pointsLeft forKey: @"pointsWorth"];
+    [encoder encodeInteger:_pointsLeft forKey: @"pointsLeft"];
 }
 
 - (id)init
@@ -77,8 +77,8 @@
         _language = 0;
         _minimumRiskFactor = 0;
         
-        _completed = false;
-        _pointsLeft = 0;
+        //_completed = false;
+        _pointsLeft = 1000;
     }
 	return self;
 }
@@ -110,7 +110,7 @@
         
         self.relationshipHappyExcludes = [decoder decodeObjectForKey: @"relationshipHappyExcludes"];
         
-        self.completed = [decoder decodeBoolForKey:@"completed"];
+        //self.completed = [decoder decodeBoolForKey:@"completed"];
         
         self.kidsExclude = [decoder decodeObjectForKey: @"kidsExclude"];
         
@@ -119,7 +119,7 @@
         self.language = [decoder decodeIntegerForKey: @"language"];
         self.minimumRiskFactor = [decoder decodeIntegerForKey: @"minimumRiskFactor"];
         
-        self.pointsLeft = [decoder decodeIntegerForKey: @"pointsWorth"];
+        self.pointsLeft = [decoder decodeIntegerForKey: @"pointsLeft"];
     }
 	return self;
 }
@@ -158,7 +158,7 @@
     challenge.relationshipLevelExcludes = [self.relationshipLevelExcludes copy];
     challenge.relationshipHappyExcludes = [self.relationshipHappyExcludes copy];
     
-    challenge.completed = self.completed;
+    //challenge.completed = self.completed;
     
     challenge.kidsExclude = [self.kidsExclude copy];
     challenge.petsExclude = [self.petsExclude copy];
@@ -169,5 +169,33 @@
     challenge.pointsLeft = self.pointsLeft;
     return challenge;
 }
+- (BOOL)isCompleted
+{
+    bool completed = false;
+    for(Task *task in self.tasks)
+    {
+        if(task.completed)
+        {
+            completed = true;
+        }
+        else
+        {
+            completed = false;
+            break;
+        }
+    }
+     return completed;
+}
 
+-(NSInteger) getPointsWorth
+{
+    NSInteger pointTotal = 0;
+    for(Task *task in self.tasks)
+    {
+        pointTotal += task.points;
+
+    }
+    return pointTotal;
+    
+}
 @end

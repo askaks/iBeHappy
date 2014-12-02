@@ -33,7 +33,8 @@
         bioVC = [storyboard instantiateViewControllerWithIdentifier:@"505"];
 	}	
 	// viewDidLoad will be called
-	[self presentModalViewController:(UIViewController *)bioVC animated:YES];
+	//[self presentModalViewController:(UIViewController *)bioVC animated:YES];
+    [self presentViewController:bioVC animated:YES completion:nil];
 	self.bioVC = nil;
 }
 
@@ -45,7 +46,8 @@
 	}
     homeVC.profile = profile;
 	// viewDidLoad will be called
-	[self presentModalViewController:homeVC animated:YES];
+	//[self presentModalViewController:homeVC animated:YES];
+    [self presentViewController:homeVC animated:YES completion:nil];
 	self.homeVC = nil;
 }
 
@@ -57,7 +59,8 @@
 	}
     challengeVC.profile = profile;
 	// viewDidLoad will be called
-	[self presentModalViewController:challengeVC animated:YES];
+	//[self presentModalViewController:challengeVC animated:YES];
+        [self presentViewController:challengeVC animated:YES completion:nil];
 	self.challengeVC = nil;
 }
 
@@ -69,8 +72,8 @@
 	}
     remVC.profile = profile;
 	// viewDidLoad will be called
-	[self presentModalViewController:remVC animated:YES];
-	
+	//[self presentModalViewController:remVC animated:YES];
+    [self presentViewController:remVC animated:YES completion:nil];
 	self.remVC = nil;
 }
 - (IBAction)Help:(id)sender
@@ -80,7 +83,8 @@
         helpVC = [storyboard instantiateViewControllerWithIdentifier:@"805"];
 	}
 	// viewDidLoad will be called
-	[self presentModalViewController:(UIViewController *)helpVC animated:YES];
+	//[self presentModalViewController:(UIViewController *)helpVC animated:YES];
+    [self presentViewController:helpVC animated:YES completion:nil];
 	self.helpVC = nil;
 }
 

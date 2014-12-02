@@ -313,7 +313,9 @@
     if(profile == nil)
     {
         self.helloUserText.text = @"Oh Oh it looks like you're profile is empty!  Create a new profile by clicking 'START' so iBeHappy can get to know you and pick out some challenges for you!";
-        [self.startOverButton setTitle:@"Start" forState:UIControlStateNormal];
+        //[self.startOverButton setTitle:@"Start" forState:UIControlStateNormal];
+        self.startOverButton.enabled = true;
+        self.startOverButton.userInteractionEnabled = true;
         self.updateProfileButton.enabled = false;
         self.updateProfileButton.titleLabel.textColor = [UIColor grayColor];
         //self.updateProfileButton.titleLabel.backgroundColor = [UIColor grayColor];

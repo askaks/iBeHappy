@@ -97,6 +97,7 @@
 	}
 	
 	//[self presentModalViewController:changeDateVC animated:YES];
+    [self presentViewController:changeDateVC animated:YES completion:nil];
 	
 	[changeDateVC setDate:dateBtn profile:profile];
     

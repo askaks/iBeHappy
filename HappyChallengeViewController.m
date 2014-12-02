@@ -96,11 +96,18 @@
 
 - (IBAction)goBack 
 {
-	[self dismissModalViewControllerAnimated:YES];	
-    
+	//[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 //    [Utility archiveProfile:profile];
 }
 
+
+
+
+
+
+
+#pragma mark - ViewControllers Loading
 - (IBAction)Profile:(id)sender
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
@@ -112,8 +119,8 @@
     bioVC.profile = profile;
 	
 	// viewDidLoad will be called
-	[self presentModalViewController:(UIViewController *)bioVC animated:YES];
-	
+	//[self presentModalViewController:(UIViewController *)bioVC animated:YES];
+    [self presentViewController:bioVC animated:YES completion:nil];
 	self.bioVC = nil;
 }
 
@@ -157,8 +164,8 @@
     remVC.profile = profile;
 	
 	// viewDidLoad will be called
-	[self presentModalViewController:remVC animated:YES];
-	
+	//[self presentModalViewController:remVC animated:YES];
+    [self presentViewController:remVC animated:YES completion:nil];
 	self.remVC = nil;
 }
 
@@ -171,11 +178,21 @@
 	}
     
 	// viewDidLoad will be called
-	[self presentModalViewController:(UIViewController *)helpVC animated:YES];
-	
+	//[self presentModalViewController:(UIViewController *)helpVC animated:YES];
+    [self presentViewController:helpVC animated:YES completion:nil];
 	self.helpVC = nil;
 }
 
+
+
+
+
+
+
+
+
+
+#pragma mark - ViewController Setup
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -185,34 +202,149 @@
     }
     return self;
 }
-
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+- (void)viewDidLoad
+{
+    
+    bool challengesLoadedCorrectly = false;
+    [super viewDidLoad];
+    
+    //If no profile then don't attempt to load challenges
+    if(profile == nil || !profile.profileCompleted)
+    {
+        [self doBasicChallengeUISetup:profileProblem];
+    }
+    
+    //if profile already has challenges loaded, startChallenge
+    else if (profile.challenges != nil && profile.challenges.count > 0)
+    {
+        challengesLoadedCorrectly = true;
+    }
+    //Fetch Challenges from Parse
+    else
+    {
+        challengesLoadedCorrectly = [self pullChallengesFromParse];
+    }
+    
+    //at this point profile should have all challenges loaded
+    if(challengesLoadedCorrectly)
+    {
+        bool challengeForToday = false;
+        NSString *nowString = [self todaysMonthDayString];
+        if(![nowString isEqualToString:profile.currentChallengeDate])
+        {
+            if([self getNewChallengeForToday])
+            {
+                challengeForToday = true;
+            }
+        }
+        else
+        {
+            challengeForToday = true;
+        }
+        if(challengeForToday)
+        {
+            [self doBasicChallengeUISetup:good];
+            [self displayTodaysChallenge];
+            [Utility archiveProfile:profile];
+        }
+    }
+    else
+    {
+        [self doBasicChallengeUISetup:challengesProblem];
+    }
+}
 - (void)displayTodaysChallenge
 {
-    NSString *text;
-    text = [NSString stringWithFormat:@"Challenges for day: profile.currentChallengeDate"];
+    //NSString *text;
+    //text = [NSString stringWithFormat:@"Challenges for day: profile.currentChallengeDate"];
+
     int rec = [profile.todaysChallenge.tasks count];
     if (rec > 0)
     {
         for (int i=0; i<rec; i++)
         {
             Task *tk = [profile.todaysChallenge.tasks objectAtIndex:i];
-            text = [[NSString alloc] initWithFormat:@"%@\n(%d) %@", text, i+1, tk.message];
+            //text = [[NSString alloc] initWithFormat:@"%@\n(%d) %@", text, i+1, tk.message];
         }
-        
-        challengeText.text = text;
     }
-    self.forPointsLabel.text = [NSString stringWithFormat:@"For %d points:", profile.todaysChallenge.pointsLeft];
     if(profile.todaysChallenge.completed)
     {
-        self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: %d", profile.todaysChallenge.pointsLeft];
-        completedChallengeSegment.selectedSegmentIndex = 1;
+        [self doChallengeCompletedUISetup];
+    }
+}
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+- (void)viewDidUnload
+{
+    [self setChallengeText:nil];
+    [self setForPointsLabel:nil];
+    [self setPointsEarnedLabel:nil];
+    [self setCompletedChallengeSegment:nil];
+    [self setFullTaskView:nil];
+    [self setFullTaskText:nil];
+    [self setCloseFullTaskText:nil];
+    [self setDoneFullTaskButton:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+
+#pragma mark - UI Setup
+- (void)doBasicChallengeUISetup:(enum status) displayStatus
+{
+    if(displayStatus == profileProblem)
+    {
+        self.challengeTitleLabel.text = @"No Challenge Loaded";
+        self.forPointsLabel.text = @"0";
+        self.pointsEarnedLabel.text = @"0";
+        self.challengeStatusLabel.text = @"No Challenges Loaded because your profile is not complete!";
+        self.challengeStatusLabel.enabled = true;
+        self.challengeStatusLabel.hidden = false;
+    }
+    if(displayStatus == challengesProblem)
+    {
+        self.challengeTitleLabel.text = @"No Challenges Loaded";
+        self.forPointsLabel.text = @"0";
+        self.pointsEarnedLabel.text = @"0";
+        self.challengeStatusLabel.text = @"There was a problem loading your challenges - try setting up your profile again!";
+        self.challengeStatusLabel.enabled = true;
+        self.challengeStatusLabel.hidden = false;
     }
     else
     {
-        self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: 0"];
+        self.challengeStatusLabel.hidden = true;
+        self.challengeTitleLabel.text = profile.todaysChallenge.title;
+        self.forPointsLabel.text = [NSString stringWithFormat:@"For %ld points:", (long)profile.todaysChallenge.pointsWorth];
     }
 }
+//This is called initially on a ViewLoad and each time a task is completed or uncompleted
+- (void)doChallengeCompletedUISetup
+{
+    UIImage *checkImage = [UIImage imageNamed:@"CheckIcon.png"];
+    self.challengeCompletedButton.enabled = true;
+    [self.challengeCompletedButton setImage:checkImage forState:normal];
+    self.challengeStatusLabel.hidden = false;
+    self.challengeStatusLabel.text = @"Challenge Completed!";
+    self.challengeStatusLabel.textColor = [UIColor blueColor];
+    self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points Earned: %ld ", (long)(profile.todaysChallenge.pointsWorth - profile.todaysChallenge.pointsLeft)];
+}
+- (void)doChallengeIncompletedUISetup
+{
+    [self.challengeCompletedButton setImage:NULL forState:normal];
+    self.challengeCompletedButton.enabled = true;
+    self.challengeStatusLabel.hidden = true;
+    self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points Earned: %ld ", (long)(profile.todaysChallenge.pointsWorth - profile.todaysChallenge.pointsLeft)];
+}
 
+
+#pragma mark - Loading Challenges into ChallengeViewController
 - (BOOL)getNewChallengeForToday
 {
     bool isChallengeAvailable = false;
@@ -249,6 +381,7 @@
     return isChallengeAvailable;
 }
 
+
 - (NSString *)todaysMonthDayString
 {
     NSString *nowString;
@@ -260,55 +393,7 @@
     return nowString;
 }
 
-- (void)viewDidLoad
-{
 
-    bool challengesLoadedCorrectly = false;
-    [super viewDidLoad];
-
-    //If no profile then don't attempt to load challenges
-    if(profile == nil && [profile.name isEqual:@"No Profile Created"])
-    {
-        self.challengeStatusLabel.hidden = false;
-        self.challengeStatusLabel.text = @"No Challenges Loaded!";
-    }
-
-    //if profile already has challenges loaded, startChallenge
-    else if (profile.challenges != nil && profile.challenges.count > 0)
-    {
-        self.challengeStatusLabel.hidden = true;
-        challengesLoadedCorrectly = true;
-    }
-    //Fetch Challenges from Parse
-    else
-    {
-        self.challengeStatusLabel.hidden = true;
-        challengesLoadedCorrectly = [self pullChallengesFromParse];
-    }
-    //at this point profile should have all challenges loaded
-    if(challengesLoadedCorrectly)
-    {
-        //[profile.challenges sortUsingFunction:randomSort(<#id obj1#>, <#id obj2#>, <#void *context#>) context:nil];
-        bool challengeForToday = false;
-        NSString *nowString = [self todaysMonthDayString];
-        if(![nowString isEqualToString:profile.currentChallengeDate])
-        {
-            if([self getNewChallengeForToday])
-            {
-                challengeForToday = true;
-            }
-        }
-        else
-        {
-            challengeForToday = true;
-        }
-        if(challengeForToday)
-        {
-            [self displayTodaysChallenge];
-            [Utility archiveProfile:profile];
-        }
-    }
-}
 
 int randomSort(id obj1, id obj2, void *context ) {
     // returns random number -1 0 1
@@ -326,6 +411,8 @@ int randomSort(id obj1, id obj2, void *context ) {
     	i++;
     }
 }
+
+#pragma mark - Loading Challenges From Parse
 
 -(BOOL) pullChallengesFromParse {
     
@@ -394,6 +481,7 @@ int randomSort(id obj1, id obj2, void *context ) {
     [taskQuery whereKey:@"parentChallenge" equalTo:challengeObject];
     NSArray *objects = [taskQuery findObjects]; //]:^(NSArray *objects, NSError *error){
     dailyChallenge.tasks = [[NSMutableArray alloc] init];
+    dailyChallenge.pointsLeft = 0;
     if (objects != NULL || objects.count == 0)
     {
         for (PFObject *objTasks in objects)
@@ -401,8 +489,9 @@ int randomSort(id obj1, id obj2, void *context ) {
             NSString *actionObj = objTasks[@"action"];
             NSNumber *pointObj = objTasks[@"points"];
             NSLog(@"ageMinObs: %@", actionObj);
-            Task *task  = [[Task alloc] initWithMessageAndPoints:actionObj points:[pointObj integerValue]];
-            [dailyChallenge.tasks addObject:task];
+            Task *task1  = [[Task alloc] initWithMessageAndPoints:actionObj points:[pointObj integerValue]];
+            dailyChallenge.pointsLeft += task1.points;
+            [dailyChallenge.tasks addObject:task1];
         }
     }
         // The find succeeded. The first 100 objects are available in object
@@ -420,115 +509,103 @@ int randomSort(id obj1, id obj2, void *context ) {
     }
     return dailyChallenge;
     
-}- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
 }
 
 
-- (void)viewDidUnload
-{
-    [self setChallengeText:nil];
-    [self setForPointsLabel:nil];
-    [self setPointsEarnedLabel:nil];
-    [self setCompletedChallengeSegment:nil];
-    [self setFullTaskView:nil];
-    [self setFullTaskText:nil];
-    [self setCloseFullTaskText:nil];
-    [self setDoneFullTaskButton:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-- (IBAction)isCompletedChange:(id)sender {
-      if (completedChallengeSegment.selectedSegmentIndex == 0) {
-        profile.score += profile.todaysChallenge.pointsLeft;
-        self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points just earned: %d", profile.todaysChallenge.pointsLeft];
-     profile.todaysChallenge.completed = true;
-          profile.numOfCompletedChallenges += 1;
-          self.challengeStatusLabel.hidden = false;
-          self.challengeStatusLabel.text = @"Challenge Completed!";
-          self.challengeStatusLabel.textColor = [UIColor blueColor];
-      }
-      else
-    {
-        profile.numOfCompletedChallenges -= 1;
-         profile.todaysChallenge.completed = false;
-          profile.score -= profile.todaysChallenge.pointsLeft;
-          self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: 0"];
-          self.challengeStatusLabel.hidden = true;
-      }
-}
 
-- (BOOL)shouldAddChallenge
-{
-    
-    NSDate *now = [[NSDate alloc] init];
-    NSDateFormatter *dateFormat;
-    dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"MMMM d, yyyy"];
-    
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 
-    NSDateComponents *components = [gregorianCalendar components: (NSYearCalendarUnit )
-                                                        fromDate:profile.birthDay
-                                                          toDate:now                                                         options:nil];
-   NSInteger currentAge = [components year];
-    
-    bool addChallenge = true;
-    if (challenge.ageMax.intValue < currentAge) {
-        addChallenge = false;
-    }
-    else if (challenge.ageMin.intValue > currentAge) {
-        addChallenge = false;
-    }
-    
-    else if([challenge.genderExcludes containsObject:profile.sex])
-    {
-        addChallenge = false;
-    }
-    else if([challenge.interestedInExcludes containsObject:profile.seeking])
-    {
-        addChallenge = false;
-    }
-    
-    else if([challenge.schoolHappyExcludes containsObject:profile.keepStudying])
-    {
-        addChallenge = false;
-    }
-    else if([challenge.schoolLevelExcludes containsObject:profile.education])
-    {
-        addChallenge = false;
-    }
-    else if([challenge.workLevelExcludes containsObject:profile.income])
-    {
-        addChallenge = false;
-    }
-    else if([challenge.workHappyExcludes containsObject:profile.jobAttitude])
-    {
-        addChallenge = false;
-    }
-    else if([challenge.relationshipExcludes containsObject:profile.relation])
-    {
-        addChallenge = false;
-    }
-    else if([challenge.happyWithRelationship isEqual:profile.relationshipContentment])
-    {
-        addChallenge = false;
-    }
-    else if([challenge.kidsExclude containsObject:profile.kids])
-    {
-        addChallenge = false;
-    }
-    else if([challenge.petsExclude containsObject:profile.pets])
-    {
-        addChallenge = false;
-    }
-    return addChallenge;
-}
+
+//- (IBAction)isCompletedChange:(id)sender {
+//      if (completedChallengeSegment.selectedSegmentIndex == 0) {
+//        profile.score += profile.todaysChallenge.pointsLeft;
+//        self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points just earned: %d", profile.todaysChallenge.pointsLeft];
+//     //profile.todaysChallenge.completed = true;
+//          profile.numOfCompletedChallenges += 1;
+//          [self doChallengeCompletedUISetup];
+////          self.challengeStatusLabel.hidden = false;
+////          self.challengeStatusLabel.text = @"Challenge Completed!";
+////          self.challengeStatusLabel.textColor = [UIColor blueColor];
+//      }
+//      else
+//    {
+//        profile.numOfCompletedChallenges -= 1;
+//         //profile.todaysChallenge.completed = false;
+//          profile.score -= profile.todaysChallenge.pointsLeft;
+//          self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: 0"];
+//        [self doChallengeIncompletedUISetup];
+//          //self.challengeStatusLabel.hidden = true;
+//      }
+//}
+
+//- (BOOL)shouldAddChallenge
+//{
+//    
+//    NSDate *now = [[NSDate alloc] init];
+//    NSDateFormatter *dateFormat;
+//    dateFormat = [[NSDateFormatter alloc] init];
+//    [dateFormat setDateFormat:@"MMMM d, yyyy"];
+//    
+//    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//
+//    NSDateComponents *components = [gregorianCalendar components: (NSYearCalendarUnit )
+//                                                        fromDate:profile.birthDay
+//                                                          toDate:now                                                         options:nil];
+//   NSInteger currentAge = [components year];
+//    
+//    bool addChallenge = true;
+//    if (challenge.ageMax.intValue < currentAge) {
+//        addChallenge = false;
+//    }
+//    else if (challenge.ageMin.intValue > currentAge) {
+//        addChallenge = false;
+//    }
+//    
+//    else if([challenge.genderExcludes containsObject:profile.sex])
+//    {
+//        addChallenge = false;
+//    }
+//    else if([challenge.interestedInExcludes containsObject:profile.seeking])
+//    {
+//        addChallenge = false;
+//    }
+//    
+//    else if([challenge.schoolHappyExcludes containsObject:profile.keepStudying])
+//    {
+//        addChallenge = false;
+//    }
+//    else if([challenge.schoolLevelExcludes containsObject:profile.education])
+//    {
+//        addChallenge = false;
+//    }
+//    else if([challenge.workLevelExcludes containsObject:profile.income])
+//    {
+//        addChallenge = false;
+//    }
+//    else if([challenge.workHappyExcludes containsObject:profile.jobAttitude])
+//    {
+//        addChallenge = false;
+//    }
+//    else if([challenge.relationshipExcludes containsObject:profile.relation])
+//    {
+//        addChallenge = false;
+//    }
+//    else if([challenge.happyWithRelationship isEqual:profile.relationshipContentment])
+//    {
+//        addChallenge = false;
+//    }
+//    else if([challenge.kidsExclude containsObject:profile.kids])
+//    {
+//        addChallenge = false;
+//    }
+//    else if([challenge.petsExclude containsObject:profile.pets])
+//    {
+//        addChallenge = false;
+//    }
+//    return addChallenge;
+//}
 
 #pragma mark -
-#pragma mark Table view data source
+#pragma mark Tasks: Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView
 heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -583,7 +660,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     pointsLabel.textColor = [UIColor orangeColor];
     pointsLabel.font = [UIFont boldSystemFontOfSize:16.0];
     [cell addSubview:pointsLabel];
-    self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: %d", profile.score];
+    //self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: %d", profile.score];
     return cell;
 }
 
@@ -612,7 +689,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     NSLog(@"Selected row is: %d",taskNum);
     UIImage *checkImage = [UIImage imageNamed:@"CheckIcon.png"];
     Task *task1 = [profile.todaysChallenge.tasks objectAtIndex:taskNum];
-    NSString * completedText = @"";
+    //NSString * completedText = @"";
     
     if(task1.completed)
     {
@@ -620,7 +697,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
         [chbutton setImage:NULL forState:normal];
         profile.score -= task1.points;
         profile.todaysChallenge.pointsLeft += task1.points;
-        completedText = @"";
+        [self doChallengeIncompletedUISetup];
     }
     else
     {
@@ -628,51 +705,51 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
         [chbutton setImage:checkImage forState:normal];
         profile.score += task1.points;
         profile.todaysChallenge.pointsLeft -= task1.points;
+        if(profile.todaysChallenge.completed)
+        {
+            [self doChallengeCompletedUISetup];
+        }
+//        if(profile.todaysChallenge.pointsLeft <= 0)
+//        {
+//            //profile.todaysChallenge.completed = true;
+//            //profile.numOfCompletedChallenges += 1;
+//            completedText = @"CHALLENGE COMPELETED";
+//            [self.challengeCompletedButton setImage:checkImage forState:normal];
+//             //self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: %d", profile.score];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Challenge Completed"
+//                                                            message:@"Congratulations, you have completed today's challenge!  Next challenge tomorrow!"
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//        }
         
-        if(profile.todaysChallenge.pointsLeft <= 0)
-        {
-            profile.todaysChallenge.completed = true;
-            profile.numOfCompletedChallenges += 1;
-            completedText = @"CHALLENGE COMPELETED";
-            [self.challengeCompletedButton setImage:checkImage forState:normal];
-             //self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: %d", profile.score];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Challenge Completed"
-                                                            message:@"Congratulations, you have completed today's challenge!  Next challenge tomorrow!"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles: nil];
-            [alert show];
-        }
-        
-        if(profile.score >= 1000)
-        {
-            //profile.relationshipContentment = @"yes";
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Next Level"
-                                                            message:@"Congratulations, you have reached 1000 points!  Go to Next Level on your Home Screen to access your next level of challenges."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles: nil];
-            [alert show];
-        }
-        else if(profile.numOfCompletedChallenges >= 30)
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Next Level"
-                                                            message:@"Congratulations, you have completed 30 challenges!  Go to Next Level on your Home Screen to access your next level of challenges."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles: nil];
-            [alert show];
-            
-        }
+//        if(profile.score >= 1000)
+//        {
+//            //profile.relationshipContentment = @"yes";
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Next Level"
+//                                                            message:@"Congratulations, you have reached 1000 points!  Go to Next Level on your Home Screen to access your next level of challenges."
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//        }
+//        else if(profile.numOfCompletedChallenges >= 30)
+//        {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Next Level"
+//                                                            message:@"Congratulations, you have completed 30 challenges!  Go to Next Level on your Home Screen to access your next level of challenges."
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles: nil];
+//            [alert show];
+//            
+//        }
         
     }
-    self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: %d %@", profile.score, completedText];
+//    self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: %d %@", profile.score, completedText];
 }
 
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
+
 
 @end

@@ -83,7 +83,9 @@
 @property (nonatomic, assign) NSInteger minimumRiskFactor;
 @property (nonatomic, assign) NSInteger language;
 
-@property bool completed;
+//@property bool completed;
+@property (getter=isCompleted, readonly) BOOL completed;
+@property (getter=getPointsWorth, readonly) NSInteger pointsWorth;
 
 - (void)encodeWithCoder: (NSCoder *)encoder;
 - (id)initWithCoder: (NSCoder *)decoder;

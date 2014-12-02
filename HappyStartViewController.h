@@ -47,24 +47,12 @@
 @property (nonatomic, strong) IBOutlet UIImageView *headerImageView;
 
 @property (strong, nonatomic) IBOutlet UITabBarItem *ProfileTab;
-@property (weak, nonatomic) IBOutlet UITextView *AfirstText;
-@property (weak, nonatomic) IBOutlet UITextView *BnextText;
-@property (weak, nonatomic) IBOutlet UITextView *CchallengePerDayText;
-@property (weak, nonatomic) IBOutlet UITextView *DdoYourBestText;
-@property (weak, nonatomic) IBOutlet UITextView *EbutterflyText;
-@property (weak, nonatomic) IBOutlet UITextView *EPart2ButterflyText;
-@property (weak, nonatomic) IBOutlet UITextView *FreadyGoText;
 @property (weak, nonatomic) IBOutlet UIImageView *popUpBackground;
 @property (weak, nonatomic) IBOutlet UIButton *startExplanationButton;
 //@property (weak, nonatomic) IBOutlet UITextView *initialText;
 @property (weak, nonatomic) IBOutlet UIButton *helpButton;
 @property (weak, nonatomic) IBOutlet UIButton *goButton;
-@property (weak, nonatomic) IBOutlet UIButton *AtoBButton;
-@property (weak, nonatomic) IBOutlet UIButton *BtoCButton;
-@property (weak, nonatomic) IBOutlet UIButton *CtoDButton;
-@property (weak, nonatomic) IBOutlet UIButton *DtoEButton;
-@property (weak, nonatomic) IBOutlet UIButton *EtoEPart2Button;
-@property (weak, nonatomic) IBOutlet UIButton *EtoFButton;
+
 @property (weak, nonatomic) IBOutlet UITextView *welcomeMessageText;
 
 @property (nonatomic, retain) HappyOptions *happyOptions;

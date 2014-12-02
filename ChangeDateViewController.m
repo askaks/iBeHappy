@@ -20,7 +20,9 @@
     NSString *str = [dateBtn titleForState:0];
     NSDate *day = [_dateFormat dateFromString:str];
     profile.birthDay = day;
+    [self dismissViewControllerAnimated:YES completion:nil];
 	//[self dismissModalViewControllerAnimated:YES];
+    //[self presentViewController:challengeVC animated:YES completion:nil];
 }
 
 - (IBAction)showDate:(id)sender {
