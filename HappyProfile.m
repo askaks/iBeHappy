@@ -34,7 +34,7 @@
     [encoder encodeInteger:_score forKey:@"score"];
     
     [encoder encodeInteger:_numOfViewedChallenges forKey:@"numOfViewedChallenges"];
-    [encoder encodeInteger:_numOfCompletedChallenges forKey:@"numOfCompletedChallenges"];
+    //[encoder encodeInteger:_numOfCompletedChallenges forKey:@"numOfCompletedChallenges"];
     [encoder encodeInteger:_currChallengeIndex forKey:@"currChallengeIndex"];
     [encoder encodeInteger:_level forKey:@"level"];
     
@@ -78,7 +78,7 @@
         self.remindersOn = [decoder decodeBoolForKey:@"remindersOn"];
         self.profileCompleted = [decoder decodeBoolForKey:@"profileCompleted"];
         self.level = [decoder decodeIntegerForKey:@"level"];
-        self.numOfCompletedChallenges = [decoder decodeIntegerForKey:@"numOfCompletedChallenges"];
+        //self.numOfCompletedChallenges = [decoder decodeIntegerForKey:@"numOfCompletedChallenges"];
         self.numOfViewedChallenges = [decoder decodeIntegerForKey:@"numOfViewedChallenges"];
         self.currChallengeIndex = [decoder decodeIntegerForKey:@"currChallengeIndex"];
         
@@ -187,7 +187,7 @@
     profile.todaysChallenge = [self.todaysChallenge copy];
     profile.remindersOn = self.remindersOn;
     profile.numOfViewedChallenges = self.numOfViewedChallenges;
-    profile.numOfCompletedChallenges = self.numOfCompletedChallenges;
+    //profile.numOfCompletedChallenges = self.numOfCompletedChallenges;
     
     profile.notification = self.notification;
     
@@ -217,7 +217,7 @@
     self.challenges = nil;
     self.todaysChallenge = nil;
     self.numOfViewedChallenges = 0;
-    self.numOfCompletedChallenges = 0;
+    //self.numOfCompletedChallenges = 0;
     self.currentChallengeDate = @"1900,01,01";
 }
 
@@ -252,5 +252,16 @@
     profileString = [NSString stringWithFormat:@"@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@", nameString, ageString, location,sexString, interestedInString, relationshipString, relationshipContentmentString, educationString, educationContentmentString, incomeString, incomeContentmentString, kidsString, petsString, languageSettingString, personalitySettingString, happinessIndexString];
     return profileString;
 }
-
+- (NSInteger) getNumOfCompletedChallenges
+{
+    NSInteger numCompleted = 0;
+    for(DailyChallenge *challenge in self.challenges)
+    {
+        if(challenge.completed)
+        {
+            numCompleted++;
+        }
+    }
+    return numCompleted;
+}
 @end

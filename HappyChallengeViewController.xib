@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" image="MiddleBackgroundWhiteHalfRound.png" id="67">
-                    <rect key="frame" x="-7" y="45" width="335" height="382"/>
+                    <rect key="frame" x="-7" y="45" width="335" height="386"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
@@ -36,7 +36,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <tabBar contentMode="scaleToFill" id="6">
-                    <rect key="frame" x="0.0" y="427" width="325" height="49"/>
+                    <rect key="frame" x="0.0" y="431" width="325" height="49"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <items>
@@ -50,7 +50,7 @@
                     <color key="selectedImageTintColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </tabBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="12">
-                    <rect key="frame" x="77" y="429" width="43" height="29"/>
+                    <rect key="frame" x="77" y="433" width="43" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" image="Icon.png">
@@ -62,7 +62,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="29">
-                    <rect key="frame" x="267" y="428" width="43" height="29"/>
+                    <rect key="frame" x="267" y="432" width="43" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" backgroundImage="colored help button.png">
@@ -77,7 +77,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="13">
-                    <rect key="frame" x="10" y="429" width="43" height="29"/>
+                    <rect key="frame" x="10" y="433" width="43" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" image="color house button.png">
@@ -92,7 +92,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="14">
-                    <rect key="frame" x="204.5" y="429.5" width="43" height="29"/>
+                    <rect key="frame" x="204.5" y="433.5" width="43" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" image="color challenges button.png">
@@ -106,7 +106,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="16">
-                    <rect key="frame" x="141" y="428" width="43" height="29"/>
+                    <rect key="frame" x="141" y="432" width="43" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="15"/>
                     <state key="normal" backgroundImage="color settings button.png">

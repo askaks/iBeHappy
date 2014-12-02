@@ -44,6 +44,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *updateProfileButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextLevelButton;
 @property (weak, nonatomic) IBOutlet UIButton *restartButton;
+@property enum status {newUser, noChallengesCompleted,oneChallengeCompleted, someChallengesCompleted, done, problem};
+
 
 - (IBAction)StartingOver:(id)sender;
 - (IBAction)UpdateProfile:(id)sender;

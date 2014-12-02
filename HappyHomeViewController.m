@@ -28,6 +28,140 @@
 
 @synthesize startOver;
 
+
+
+#pragma mark - ViewController Loading
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    if(profile == nil)
+    {
+        [self doBasicUISetup:newUser];
+    }
+    else
+    {
+//        if(some condition signifying all challenges completed)
+//        {
+//            [self doBasicUISetup:done];
+//        }
+        if(profile.numOfCompletedChallenges <= 0)
+        {
+            [self doBasicUISetup:noChallengesCompleted];
+        }
+        else if (profile.numOfCompletedChallenges == 1)
+        {
+            [self doBasicUISetup:oneChallengeCompleted];
+        }
+        else
+        {
+            [self doBasicUISetup:someChallengesCompleted];
+        }
+    }
+
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewDidUnload
+{
+    [self setHelloUserText:nil];
+    [self setHappinessRatingLabel:nil];
+    [self setStartOverButton:nil];
+    [self setUpdateProfileButton:nil];
+    [self setNextLevelButton:nil];
+    [self setRestartButton:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - UI Setup
+- (void)doBasicUISetup: (enum status) currentStatus
+{
+    if(currentStatus == newUser)
+    {
+        self.helloUserText.text = @"Uh Oh - it looks like you're profile is empty!  Create a new profile by clicking 'START' so iBeHappy can get to know you and pick out some challenges for you!";
+        //[self.startOverButton setTitle:@"Start" forState:UIControlStateNormal];
+        self.startOverButton.enabled = true;
+        self.startOverButton.userInteractionEnabled = true;
+        self.updateProfileButton.enabled = false;
+        self.updateProfileButton.titleLabel.textColor = [UIColor grayColor];
+        //self.updateProfileButton.titleLabel.backgroundColor = [UIColor grayColor];
+        self.restartButton.enabled = false;
+        self.restartButton.titleLabel.textColor = [UIColor grayColor];
+        //self.restartButton.titleLabel.backgroundColor = [UIColor grayColor];
+        self.nextLevelButton.enabled = false;
+        self.nextLevelButton.titleLabel.textColor = [UIColor grayColor];
+    }
+    //@property enum status {newUser, noChallengesCompleted,oneChallengeCompleted, someChallengesCompleted, done, problem};
+    
+    else if (currentStatus == noChallengesCompleted) {
+        if(![profile.name isEqualToString:@""])
+        {
+            self.helloUserText.text = [NSString stringWithFormat:@"%@, you haven't completed any challenges yet.", profile.name];
+        }
+        else
+        {
+            self.helloUserText.text = [NSString stringWithFormat:@"You haven't completed any challenges yet."];
+        }
+    }
+    else if (currentStatus == oneChallengeCompleted) {
+        if(![profile.name isEqualToString:@""])
+        {
+            self.helloUserText.text = [NSString stringWithFormat:@"%@, so far you have completed one challenge out of %d viewed.", profile.name, profile.numOfViewedChallenges];
+        }
+        else
+        {
+            self.helloUserText.text = [NSString stringWithFormat:@"So far you have completed one challenge out of %d viewed.", profile.numOfViewedChallenges];
+        }
+    }
+    else if (currentStatus == someChallengesCompleted) {
+        if(![profile.name isEqualToString:@""])
+        {
+            self.helloUserText.text = [NSString stringWithFormat:@"%@, so far you have completed %d challenges out of %d viewed.", profile.name, profile.numOfCompletedChallenges, profile.numOfViewedChallenges];
+        }
+        else
+        {
+            self.helloUserText.text = [NSString stringWithFormat:@"So far you have completed %d challenges out of %d viewed.", profile.numOfCompletedChallenges, profile.numOfViewedChallenges];
+        }
+    }
+    else if (currentStatus == done) {
+        if(![profile.name isEqualToString:@""])
+        {
+            self.helloUserText.text = [NSString stringWithFormat:@"%@, you have finished your first set of iBeHappy Challenges, completing %d challenges out of %d possible Challenges.  Hit Next Level to see what new challenges are available.", profile.name, profile.numOfCompletedChallenges, profile.numOfViewedChallenges];
+        }
+        else
+        {
+            self.helloUserText.text = [NSString stringWithFormat:@"You have finished your first set of iBeHappy Challenges, completing %d challenges out of %d possible Challenges.  Hit Next Level to see what new challenges are available.", profile.numOfCompletedChallenges, profile.numOfViewedChallenges];
+        }
+        self.nextLevelButton.enabled = true;
+        self.nextLevelButton.titleLabel.textColor = [UIColor greenColor];
+    }
+}
+
+#pragma mark - Actions
+
 - (IBAction)StartingOver:(id)sender
 {
 
@@ -210,80 +344,7 @@
     //NSLog(@"UpdateProfileAnimationCompleted Completed");
     
 }
-- (IBAction)Profile:(id)sender
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-	
-    if (nil == bioVC) {
-        bioVC = [storyboard instantiateViewControllerWithIdentifier:@"505"];
-	}
-    
-    bioVC.profile = profile;
-	
-	// viewDidLoad will be called
-	[self presentViewController:(UIViewController *)bioVC animated:YES completion:nil];
-	
-	self.bioVC = nil;
-}
 
-- (IBAction)Score:(id)sender
-{
-	if (nil == scoreVC) {
-		scoreVC = [[HappyScoreViewController alloc] initWithNibName:@"HappyScoreViewController"
-                                                             bundle:nil];
-	}
-    
-    scoreVC.profile = profile;
-	
-	// viewDidLoad will be called
-	[self presentViewController:scoreVC animated:YES completion:nil];
-	
-	self.scoreVC = nil;
-}
-
-- (IBAction)Challenge:(id)sender
-{
-	if (nil == challengeVC) {
-		challengeVC = [[HappyChallengeViewController alloc] initWithNibName:@"HappyChallengeViewController"
-                                                                     bundle:nil];
-	}
-    
-    challengeVC.profile = profile;
-	
-	// viewDidLoad will be called
-	[self presentViewController:challengeVC animated:YES completion:nil];
-	
-	self.challengeVC = nil;
-}
-
-- (IBAction)Reminders:(id)sender
-{
-	if (nil == remVC) {
-		remVC = [[HappyRemindersViewController alloc] initWithNibName:@"HappyRemindersViewController"
-                                                               bundle:nil];
-	}
-    
-    remVC.profile = profile;
-	
-	// viewDidLoad will be called
-	//[self presentModalViewController:remVC animated:YES];
-	
-	self.remVC = nil;
-}
-
-- (IBAction)Help:(id)sender
-{   
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-	
-    if (nil == helpVC) {
-        helpVC = [storyboard instantiateViewControllerWithIdentifier:@"805"];
-	}
-	
-	// viewDidLoad will be called
-	[self presentViewController:(UIViewController *)helpVC animated:YES completion:nil];
-	
-	self.helpVC = nil;
-}
 
 
 
@@ -297,102 +358,86 @@
 	return YES;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
-- (void)viewDidLoad
+
+
+
+
+
+#pragma mark - View Controllers
+- (IBAction)Profile:(id)sender
 {
-    [super viewDidLoad];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
     
-    if(profile == nil)
-    {
-        self.helloUserText.text = @"Oh Oh it looks like you're profile is empty!  Create a new profile by clicking 'START' so iBeHappy can get to know you and pick out some challenges for you!";
-        //[self.startOverButton setTitle:@"Start" forState:UIControlStateNormal];
-        self.startOverButton.enabled = true;
-        self.startOverButton.userInteractionEnabled = true;
-        self.updateProfileButton.enabled = false;
-        self.updateProfileButton.titleLabel.textColor = [UIColor grayColor];
-        //self.updateProfileButton.titleLabel.backgroundColor = [UIColor grayColor];
-        self.restartButton.enabled = false;
-        self.restartButton.titleLabel.textColor = [UIColor grayColor];
-        //self.restartButton.titleLabel.backgroundColor = [UIColor grayColor];
-        self.nextLevelButton.enabled = false;
-        self.nextLevelButton.titleLabel.textColor = [UIColor grayColor];
-        //self.nextLevelButton.backgroundColor = [UIColor grayColor];
+    if (nil == bioVC) {
+        bioVC = [storyboard instantiateViewControllerWithIdentifier:@"505"];
     }
-    if(profile.numOfCompletedChallenges >= 30 || profile.score >= 1000)
-    {
-        self.nextLevelButton.enabled = true;
-        self.nextLevelButton.titleLabel.textColor = [UIColor greenColor];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
     
-    self.happinessRatingLabel.text = @"";
+    bioVC.profile = profile;
     
-    if (profile) 
-    {
-        if(profile.numOfCompletedChallenges <= 0)
-        {
-            if(![profile.name isEqualToString:@""])
-            {
-                self.helloUserText.text = [NSString stringWithFormat:@"%@, you haven't completed any challenges yet.", profile.name];
-            }
-            else
-            {
-                self.helloUserText.text = [NSString stringWithFormat:@"You haven't completed any challenges yet."];
-            }
-        }
-        else if (profile.numOfCompletedChallenges == 1)
-        {
-            if(![profile.name isEqualToString:@""])
-            {
-                self.helloUserText.text = [NSString stringWithFormat:@"%@, so far you have completed one challenge.", profile.name];
-            }
-            else
-            {
-                self.helloUserText.text = [NSString stringWithFormat:@"So far you have completed one challenge."];
-            }
-        }
-        else
-        {
-            if(![profile.name isEqualToString:@""])
-            {
-                self.helloUserText.text = [NSString stringWithFormat:@"%@, so far you have completed %d challenges out of %d viewed.", profile.name, profile.numOfCompletedChallenges, profile.numOfViewedChallenges];
-            }
-            else
-            {
-                self.helloUserText.text = [NSString stringWithFormat:@"So far you have completed %d challenges out of %d viewed.", profile.numOfCompletedChallenges, profile.numOfViewedChallenges];
-            }
-        }
+    // viewDidLoad will be called
+    [self presentViewController:(UIViewController *)bioVC animated:YES completion:nil];
+    
+    self.bioVC = nil;
+}
+
+- (IBAction)Score:(id)sender
+{
+    if (nil == scoreVC) {
+        scoreVC = [[HappyScoreViewController alloc] initWithNibName:@"HappyScoreViewController"
+                                                             bundle:nil];
     }
+    
+    scoreVC.profile = profile;
+    
+    // viewDidLoad will be called
+    [self presentViewController:scoreVC animated:YES completion:nil];
+    
+    self.scoreVC = nil;
 }
 
-- (void)viewDidUnload
+- (IBAction)Challenge:(id)sender
 {
-    [self setHelloUserText:nil];
-    [self setHappinessRatingLabel:nil];
-    [self setStartOverButton:nil];
-    [self setUpdateProfileButton:nil];
-    [self setNextLevelButton:nil];
-    [self setRestartButton:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    if (nil == challengeVC) {
+        challengeVC = [[HappyChallengeViewController alloc] initWithNibName:@"HappyChallengeViewController"
+                                                                     bundle:nil];
+    }
+    
+    challengeVC.profile = profile;
+    
+    // viewDidLoad will be called
+    [self presentViewController:challengeVC animated:YES completion:nil];
+    
+    self.challengeVC = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (IBAction)Reminders:(id)sender
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    if (nil == remVC) {
+        remVC = [[HappyRemindersViewController alloc] initWithNibName:@"HappyRemindersViewController"
+                                                               bundle:nil];
+    }
+    
+    remVC.profile = profile;
+    
+    // viewDidLoad will be called
+    //[self presentModalViewController:remVC animated:YES];
+    
+    self.remVC = nil;
+}
+
+- (IBAction)Help:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    
+    if (nil == helpVC) {
+        helpVC = [storyboard instantiateViewControllerWithIdentifier:@"805"];
+    }
+    
+    // viewDidLoad will be called
+    [self presentViewController:(UIViewController *)helpVC animated:YES completion:nil];
+    
+    self.helpVC = nil;
 }
 
 @end

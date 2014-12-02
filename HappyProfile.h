@@ -45,7 +45,7 @@ enum ANS {
 @property (nonatomic, assign) NSInteger score;
 @property (nonatomic, assign) NSInteger maximumPossibleScore;
 @property (nonatomic, assign) NSInteger currChallengeIndex;
-@property (nonatomic, assign) NSInteger numOfCompletedChallenges;
+//@property (nonatomic, assign) NSInteger numOfCompletedChallenges;
 @property (nonatomic, assign) NSInteger numOfViewedChallenges;
 @property (nonatomic, assign) NSInteger level;
 
@@ -55,7 +55,7 @@ enum ANS {
 @property (nonatomic, retain) UILocalNotification *notification;
 @property bool remindersOn;
 @property bool profileCompleted;
-
+@property (getter=getNumOfCompletedChallenges, readonly) NSInteger numOfCompletedChallenges;
 
 - (void)encodeWithCoder: (NSCoder *)encoder;
 - (id)initWithCoder: (NSCoder *)decoder;
