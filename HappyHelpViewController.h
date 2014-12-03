@@ -16,6 +16,8 @@
 #import "HappyAboutGameViewController.h"
 #import "HappyTeamViewController.h"
 
+#import "HappyProfile.h"
+
 @class HappyBioViewController;
 @class HappyHomeViewController;
 @class HappyScoreViewController;
@@ -38,6 +40,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *aboutRegularButton;
 @property (weak, nonatomic) IBOutlet UIButton *whyStoryboardButton;
 @property (weak, nonatomic) IBOutlet UIButton *whyRegularButton;
+
+@property (nonatomic, retain) HappyProfile *profile;
+@property (nonatomic, retain) NSString *fromScreen;
 
 - (IBAction)back:(id)sender;
 - (IBAction)About:(id)sender;

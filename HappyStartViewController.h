@@ -62,13 +62,13 @@
 - (IBAction)Score:(id)sender;
 - (IBAction)Challenge:(id)sender;
 - (IBAction)Reminders:(id)sender;
-- (IBAction)Explain:(id)sender;
-- (IBAction)AToBAction:(id)sender;
-- (IBAction)BToCAction:(id)sender;
-- (IBAction)CToDAction:(id)sender;
-- (IBAction)DtoEAction:(id)sender;
-- (IBAction)EToFAction:(id)sender;
-- (IBAction)EtoEPart2Action:(id)sender;
+//- (IBAction)Explain:(id)sender;
+//- (IBAction)AToBAction:(id)sender;
+//- (IBAction)BToCAction:(id)sender;
+//- (IBAction)CToDAction:(id)sender;
+//- (IBAction)DtoEAction:(id)sender;
+//- (IBAction)EToFAction:(id)sender;
+//- (IBAction)EtoEPart2Action:(id)sender;
 - (IBAction)logoutButtonTouchHandler:(id)sender;
 
 

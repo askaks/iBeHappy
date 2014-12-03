@@ -84,6 +84,8 @@
 	}
 	// viewDidLoad will be called
 	//[self presentModalViewController:(UIViewController *)helpVC animated:YES];
+    helpVC.profile = self.profile;
+    helpVC.fromScreen = @"Score";
     [self presentViewController:helpVC animated:YES completion:nil];
 	self.helpVC = nil;
 }

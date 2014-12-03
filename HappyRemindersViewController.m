@@ -92,6 +92,8 @@
 	}
 	
 	// viewDidLoad will be called
+    helpVC.profile = self.profile;
+    helpVC.fromScreen = @"Reminders";
 	[self presentModalViewController:(UIViewController *)helpVC animated:YES];
 	
 	self.helpVC = nil;

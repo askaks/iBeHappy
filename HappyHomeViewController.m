@@ -421,7 +421,7 @@
     remVC.profile = profile;
     
     // viewDidLoad will be called
-    //[self presentModalViewController:remVC animated:YES];
+    [self presentViewController:remVC animated:YES completion:nil];
     
     self.remVC = nil;
 }
@@ -434,6 +434,8 @@
         helpVC = [storyboard instantiateViewControllerWithIdentifier:@"805"];
     }
     
+    helpVC.profile = profile;
+    helpVC.fromScreen = @"Home";
     // viewDidLoad will be called
     [self presentViewController:(UIViewController *)helpVC animated:YES completion:nil];
     

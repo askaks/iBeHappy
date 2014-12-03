@@ -179,6 +179,8 @@
     
 	// viewDidLoad will be called
 	//[self presentModalViewController:(UIViewController *)helpVC animated:YES];
+    helpVC.profile = self.profile;
+    helpVC.fromScreen = @"Challenge";
     [self presentViewController:helpVC animated:YES completion:nil];
 	self.helpVC = nil;
 }
@@ -262,15 +264,15 @@
     //NSString *text;
     //text = [NSString stringWithFormat:@"Challenges for day: profile.currentChallengeDate"];
 
-    int rec = [profile.todaysChallenge.tasks count];
-    if (rec > 0)
-    {
-        for (int i=0; i<rec; i++)
-        {
-            Task *tk = [profile.todaysChallenge.tasks objectAtIndex:i];
-            //text = [[NSString alloc] initWithFormat:@"%@\n(%d) %@", text, i+1, tk.message];
-        }
-    }
+//    int rec = [profile.todaysChallenge.tasks count];
+//    if (rec > 0)
+//    {
+//        for (int i=0; i<rec; i++)
+//        {
+//            Task *tk = [profile.todaysChallenge.tasks objectAtIndex:i];
+//            //text = [[NSString alloc] initWithFormat:@"%@\n(%d) %@", text, i+1, tk.message];
+//        }
+//    }
     if(profile.todaysChallenge.completed)
     {
         [self doChallengeCompletedUISetup];

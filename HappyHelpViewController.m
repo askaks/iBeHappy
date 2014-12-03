@@ -50,6 +50,7 @@
 	if (nil == homeVC) {
 		homeVC = [[HappyHomeViewController alloc] initWithNibName:@"HappyHomeViewController"
                                                            bundle:nil];
+        homeVC.profile = self.profile;
 	}
 	
 	// viewDidLoad will be called
@@ -202,13 +203,43 @@
 {
     if (self.navigationController == nil)
     {
-        if (nil == homeVC) {
+        if([self.fromScreen isEqualToString:@"Home"])
+        {
             homeVC = [[HappyHomeViewController alloc] initWithNibName:@"HappyHomeViewController"
                                                                bundle:nil];
+            homeVC.profile = self.profile;
             [self presentViewController:homeVC animated:YES completion:nil];
             
             self.homeVC = nil;
         }
+        else if([self.fromScreen isEqualToString:@"Challenge"])
+        {
+            homeVC = [[HappyChallengeViewController alloc] initWithNibName:@"HappyChallengeViewController"
+                                                               bundle:nil];
+            homeVC.profile = self.profile;
+            [self presentViewController:homeVC animated:YES completion:nil];
+            
+            self.homeVC = nil;
+        }
+        else if([self.fromScreen isEqualToString:@"Reminders"])
+        {
+            homeVC = [[HappyRemindersViewController alloc] initWithNibName:@"HappyRemindersViewController"
+                                                                    bundle:nil];
+            homeVC.profile = self.profile;
+            [self presentViewController:homeVC animated:YES completion:nil];
+            
+            self.homeVC = nil;
+        }
+        else if([self.fromScreen isEqualToString:@"Score"])
+        {
+            homeVC = [[HappyScoreViewController alloc] initWithNibName:@"HappyScoreViewController"
+                                                                    bundle:nil];
+            homeVC.profile = self.profile;
+            [self presentViewController:homeVC animated:YES completion:nil];
+            
+            self.homeVC = nil;
+        }
+
         else
         {
             //[self dismissModalViewControllerAnimated:YES];

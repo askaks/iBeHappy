@@ -28,8 +28,8 @@
                         <tabBarItem title="Home" image="Notes.png" id="16"/>
                         <tabBarItem title="Challenge" id="14"/>
                         <tabBarItem title="Settings" id="13"/>
-                        <tabBarItem title="Help" id="46"/>
-                        <tabBarItem title="Stats" image="3d bar chart.png" id="15"/>
+                        <tabBarItem title="Stats" id="46"/>
+                        <tabBarItem title="Help" image="3d bar chart.png" id="15"/>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="selectedImageTintColor" red="0.98567004899999999" green="1" blue="0.38123634140000001" alpha="1" colorSpace="calibratedRGB"/>
