@@ -129,7 +129,7 @@
 - (IBAction)Score:(id)sender;
 - (IBAction)Reminders:(id)sender;
 - (IBAction)Help:(id)sender;
-- (IBAction)isCompletedChange:(id)sender;
+//- (IBAction)isCompletedChange:(id)sender;
 
 //- (BOOL)shouldAddChallenge;
 

@@ -49,6 +49,7 @@
 - (IBAction)facebookSignUpButtonClick:(id)sender
 {
     NSArray *permissions = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
+    //Testing
     PFUser *user = [PFUser user];
     [PFUser logOut];
    // user = [PFUser user];

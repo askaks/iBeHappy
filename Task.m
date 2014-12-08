@@ -47,6 +47,7 @@
         _timeSpecific = @"false";
         _points =  25;
         _completed = false;
+        _reminderMessage = @"NA";
     }
 	return self;
 }
@@ -62,6 +63,7 @@
         _timeSpecific = @"false";
         _points =  25;
         _completed = false;
+        _reminderMessage = @"NA";
     }
 	return self;
 }

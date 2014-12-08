@@ -214,30 +214,30 @@
         }
         else if([self.fromScreen isEqualToString:@"Challenge"])
         {
-            homeVC = [[HappyChallengeViewController alloc] initWithNibName:@"HappyChallengeViewController"
+            challengeVC = [[HappyChallengeViewController alloc] initWithNibName:@"HappyChallengeViewController"
                                                                bundle:nil];
-            homeVC.profile = self.profile;
-            [self presentViewController:homeVC animated:YES completion:nil];
+            challengeVC.profile = self.profile;
+            [self presentViewController:challengeVC animated:YES completion:nil];
             
             self.homeVC = nil;
         }
         else if([self.fromScreen isEqualToString:@"Reminders"])
         {
-            homeVC = [[HappyRemindersViewController alloc] initWithNibName:@"HappyRemindersViewController"
+            remVC = [[HappyRemindersViewController alloc] initWithNibName:@"HappyRemindersViewController"
                                                                     bundle:nil];
-            homeVC.profile = self.profile;
-            [self presentViewController:homeVC animated:YES completion:nil];
+            remVC.profile = self.profile;
+            [self presentViewController:remVC animated:YES completion:nil];
             
-            self.homeVC = nil;
+            self.remVC = nil;
         }
         else if([self.fromScreen isEqualToString:@"Score"])
         {
-            homeVC = [[HappyScoreViewController alloc] initWithNibName:@"HappyScoreViewController"
+            scoreVC = [[HappyScoreViewController alloc] initWithNibName:@"HappyScoreViewController"
                                                                     bundle:nil];
-            homeVC.profile = self.profile;
-            [self presentViewController:homeVC animated:YES completion:nil];
+            scoreVC.profile = self.profile;
+            [self presentViewController:scoreVC animated:YES completion:nil];
             
-            self.homeVC = nil;
+            self.scoreVC = nil;
         }
 
         else

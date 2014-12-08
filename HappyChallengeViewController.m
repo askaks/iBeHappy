@@ -652,6 +652,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     
     Task *task1 = [profile.todaysChallenge.tasks objectAtIndex:i];
 
+    //Expression result seems to be used in delegate...
     score.text = (
                   @"Task %d : %s",i, task1.message);
     if(task1.completed)

@@ -117,7 +117,8 @@
     signInVC.signupWelcomeMessageText.text = @"You've been successfuully logged out.  Please relogin to Facebook or create a new profile to continue.";
     
 	// viewDidLoad will be called
-	[self presentModalViewController:signInVC animated:YES];
+	//[self presentModalViewController:signInVC animated:YES];
+    [self presentViewController:signInVC animated:YES completion:nil];
 }
 - (void)fbDidLogout
 {

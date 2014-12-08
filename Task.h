@@ -30,17 +30,17 @@
 - (id)initWithMessageAndPoints:(NSString *)msg
                         points: (NSInteger) pts;
 
-- (id)initWithMessage: (NSString *)msg
-                 time: (NSString *)t
-         timeSpecific: (NSString *)ts
-               points: (NSInteger)iPoints
-               ageMin: (NSString *)min
-               ageMax: (NSString *)max
-           femaleExcl: (NSString *)female
-             maleExcl: (NSString *)male
-       schoolSpecific: (NSString *)ss
-                scool: (NSString *)school
-         workSpecific: (NSString *)ws
-            completed: (bool) bCompleted;
+//- (id)initWithMessage: (NSString *)msg
+//                 time: (NSString *)t
+//         timeSpecific: (NSString *)ts
+//               points: (NSInteger)iPoints
+//               ageMin: (NSString *)min
+//               ageMax: (NSString *)max
+//           femaleExcl: (NSString *)female
+//             maleExcl: (NSString *)male
+//       schoolSpecific: (NSString *)ss
+//                scool: (NSString *)school
+//         workSpecific: (NSString *)ws
+//            completed: (bool) bCompleted;
 
 @end

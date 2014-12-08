@@ -33,8 +33,8 @@
 	}
 	
 	// viewDidLoad will be called
-	[self presentModalViewController:(UIViewController *)bioVC animated:YES];
-	
+	//[self presentModalViewController:(UIViewController *)bioVC animated:YES];
+    [self presentViewController:bioVC animated:YES completion:nil];
 	self.bioVC = nil;
 }
 
@@ -48,8 +48,8 @@
     homeVC.profile = profile; // don't forget!!!
 	
 	// viewDidLoad will be called
-	[self presentModalViewController:homeVC animated:YES];
-	
+	//[self presentModalViewController:homeVC animated:YES];
+    [self presentViewController:homeVC animated:YES completion:nil];
 	self.homeVC = nil;
 }
 
@@ -63,8 +63,8 @@
     scoreVC.profile = profile; // don't forget!!!
 	
 	// viewDidLoad will be called
-	[self presentModalViewController:scoreVC animated:YES];
-	
+	//[self presentModalViewController:scoreVC animated:YES];
+    [self presentViewController:scoreVC animated:YES completion:nil];
 	self.scoreVC = nil;
 }
 
@@ -78,8 +78,8 @@
     challengeVC.profile = profile; // don't forget to pass that
 
 	// viewDidLoad will be called
-	[self presentModalViewController:challengeVC animated:YES];
-	
+	//[self presentModalViewController:challengeVC animated:YES];
+    [self presentViewController:challengeVC animated:YES completion:nil];
 	self.challengeVC = nil;
 }
 
@@ -94,8 +94,8 @@
 	// viewDidLoad will be called
     helpVC.profile = self.profile;
     helpVC.fromScreen = @"Reminders";
-	[self presentModalViewController:(UIViewController *)helpVC animated:YES];
-	
+	//[self presentModalViewController:(UIViewController *)helpVC animated:YES];
+    [self presentViewController:helpVC animated:YES completion:nil];
 	self.helpVC = nil;
 }
 
@@ -106,14 +106,19 @@
         [controller setSubject:@"Thoughts on iBeHappy"];
         [controller setMessageBody:@"Hello there." isHTML:NO];
                 //[controller setToRecipients:@"aska.szymczyk@gmail.com"];
-        if (controller) [self presentModalViewController:controller animated:YES];
+        if (controller)
+        {
+            [self presentViewController:controller animated:YES completion:nil];
+        }
         //[controller release];MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
         [controller setSubject:@"iBeHappy"];
         [controller setMessageBody:@"Hello there." isHTML:NO];
               //  [controller setToRecipients:@"aska.szymczyk@gmail.com"];
-        if (controller) [self presentModalViewController:controller animated:YES];
-        //[controller release];
+        if (controller)
+        {
+            [self presentViewController:controller animated:YES completion:nil];
+        }
         // Show the composer
     } else {
         // Handle the error
@@ -127,12 +132,19 @@
         [controller setSubject:@"Try iBeHappy"];
         [controller setMessageBody:@"Hello there." isHTML:NO];
 
-        if (controller) [self presentModalViewController:controller animated:YES];
+        if (controller)
+        {
+            [self presentViewController:controller animated:YES completion:nil];
+        }
         //[controller release];MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
         [controller setSubject:@"iBeHappy"];
         [controller setMessageBody:@"Hello there." isHTML:NO];
-        if (controller) [self presentModalViewController:controller animated:YES];
+        
+        if (controller)
+        {
+            [self presentViewController:controller animated:YES completion:nil];
+        }
         //[controller release];
         // Show the composer
     } else {
@@ -158,7 +170,8 @@
     if (result == MFMailComposeResultSent) {
         NSLog(@"It's away!");
     }
-    [self dismissModalViewControllerAnimated:YES];
+    //[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

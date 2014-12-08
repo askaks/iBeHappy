@@ -169,7 +169,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="2H8-BH-WOj">
-                    <rect key="frame" x="70" y="284" width="66" height="30"/>
+                    <rect key="frame" x="63" y="283" width="83" height="43"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Update" backgroundImage="ButtonBiggerPinkGradientHighRaisedButton.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -179,7 +179,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eCK-9e-l3q">
-                    <rect key="frame" x="154" y="277" width="93" height="43"/>
+                    <rect key="frame" x="154" y="283" width="93" height="43"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Restart" backgroundImage="ButtonBiggerLimeDifferentGradientHighRaisedButton.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -188,8 +188,8 @@
                         <action selector="RestartChallengesAction:" destination="-1" eventType="touchUpInside" id="qcA-4o-Kgt"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QC5-dp-jK6">
-                    <rect key="frame" x="145" y="233" width="102" height="42"/>
+                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QC5-dp-jK6">
+                    <rect key="frame" x="145" y="239" width="102" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Next Level" backgroundImage="CyanHighRaisedButton.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
