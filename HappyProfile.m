@@ -103,7 +103,7 @@
  	if (self)
 	{
         _type = @"0.0";
-		_name = @"No Profile Created";
+		_name = @"";
 		_age = 18;
 		_sex = @"Female";
         _seeking = @"Males";
@@ -163,7 +163,45 @@
     
 	return self;
 }
-
+- (id)initWithType: (NSString *)type
+{
+    self = [super init];
+    
+    if (self)
+    {
+        _type = type;
+        _name = @"";
+        _age = 18;
+        _sex = @"Female";
+        _seeking = @"Males";
+        _income = @"No Income Selected";
+        _relation = @"No Relationship Selected";
+        _education = @"No Education Selected";
+        //reminders = @"YES";
+        _currChallengeIndex = -1;
+        _birthDay = [[NSDate alloc] init];
+        _seeking = @"na";
+        _jobAttitude = @"meh";
+        _relationshipContentment = @"no";
+        _keepStudying = @"yes";
+        _score = 0;
+        _challenges = nil;
+        _todaysChallenge = nil;
+        _remindersOn = false;
+        _currentChallengeDate = @"1900,01,01";
+        _notification  = [[UILocalNotification alloc] init];
+        _kids = @"none";
+        _pets = @"none";
+        _language = 1;
+        _personality = 1;
+        _level = 0;
+        _profileCompleted = false;
+        _location = @"";
+        _happiness = 5;
+    }
+    
+    return self;
+}
 - (id)copyWithZone:(NSZone *)zone
 {
 

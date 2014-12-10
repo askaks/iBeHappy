@@ -65,6 +65,8 @@ enum ANS {
               type: (NSString *)sType
                sex: (NSString *)sSex;
 
+- (id)initWithType: (NSString *)type;
+
 - (void)restartChallenges;
 -(NSString *)writeoutProfile;
 

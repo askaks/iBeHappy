@@ -210,7 +210,11 @@
 }
 - (void)viewDidLoad
 {
-    
+//    [_eventStore requestAccessToEntityType:EKEntityTypeReminder
+//                                completion:^(BOOL granted, NSError *error) {
+//                                    if (!granted)
+//                                        NSLog(@"Access to store not granted");
+//                                }];
     bool challengesLoadedCorrectly = false;
     [super viewDidLoad];
     
@@ -229,6 +233,7 @@
     else
     {
         challengesLoadedCorrectly = [self pullChallengesFromParse];
+        [self shuffle];
     }
     
     //at this point profile should have all challenges loaded
@@ -326,7 +331,7 @@
         self.forPointsLabel.text = [NSString stringWithFormat:@"For %ld points:", (long)profile.todaysChallenge.pointsWorth];
     }
 }
-//This is called initially on a ViewLoad and each time a task is completed or uncompleted
+//This is called initially on a ViewLoad and each time a task is completed
 - (void)doChallengeCompletedUISetup
 {
 //    CGFloat fixedWidth = self.challengeStatusText.frame.size.width;
@@ -342,14 +347,17 @@
     //[self.challengeStatusText sizeThatFits:<#(CGSize)#>
     self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points Earned: %ld ", (long)(profile.todaysChallenge.pointsWorth - profile.todaysChallenge.pointsLeft)];
 }
-- (void)doChallengeIncompletedUISetup
+- (void)doChallengeStillIncompleteUISetup
+{
+    self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points Earned: %ld ", (long)(profile.todaysChallenge.pointsWorth - profile.todaysChallenge.pointsLeft)];
+}
+- (void)doChallengeUncompletedUISetup
 {
     [self.challengeCompletedButton setImage:NULL forState:normal];
     self.challengeCompletedButton.enabled = true;
     self.challengeStatusText.hidden = true;
     self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points Earned: %ld ", (long)(profile.todaysChallenge.pointsWorth - profile.todaysChallenge.pointsLeft)];
 }
-
 
 #pragma mark - Loading Challenges into ChallengeViewController
 - (BOOL)getNewChallengeForToday
@@ -404,15 +412,21 @@
 
 int randomSort(id obj1, id obj2, void *context ) {
     // returns random number -1 0 1
-    return (random()%3 - 1);
+    int i = (random()%3 - 1);
+    return i;
 }
 
 - (void)shuffle {
+    int i = 0;
+    for (DailyChallenge * daily in profile.challenges) {
+        NSLog(@" #%d has index %@", i, daily.title);
+        i++;
+    }
     // call custom sort function
     [profile.challenges sortUsingFunction:randomSort context:nil];
-    
+    //[profile.challenges sortUsingFunction:<#(NSInteger (*)(__strong id, __strong id, void *))#> context:<#(void *)#>
     // show in log how is our array sorted
-    int i = 0;
+    i = 0;
     for (DailyChallenge * daily in profile.challenges) {
     	NSLog(@" #%d has index %@", i, daily.title);
     	i++;
@@ -448,7 +462,7 @@ int randomSort(id obj1, id obj2, void *context ) {
         {
                 //Now pull appropriate tasks
             DailyChallenge *dChallenge = [self createChallenge:challengeObj];
-            if (dChallenge != NULL) {
+            if (dChallenge != NULL && dChallenge.tasks != nil && dChallenge.tasks.count > 0) {
                 atLeastOneChallengePulledCorrectly = true;
                 [profile.challenges addObject:dChallenge];
             }
@@ -690,6 +704,29 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     doneFullTaskButton.hidden = true;
 }
 
+- (void)taskUncompleted:(Task *)task1 chbutton:(ChallengeTaskButton *)chbutton {
+    task1.completed = false;
+    [chbutton setImage:NULL forState:normal];
+    profile.score -= task1.points;
+    profile.todaysChallenge.pointsLeft += task1.points;
+    [self doChallengeUncompletedUISetup];
+}
+
+- (void)taskCompleted:(Task *)task1 checkImage:(UIImage *)checkImage chbutton:(ChallengeTaskButton *)chbutton {
+    task1.completed = true;
+    [chbutton setImage:checkImage forState:normal];
+    profile.score += task1.points;
+    profile.todaysChallenge.pointsLeft -= task1.points;
+    if(profile.todaysChallenge.completed)
+    {
+        [self doChallengeCompletedUISetup];
+    }
+    else
+    {
+        [self doChallengeStillIncompleteUISetup];
+    }
+}
+
 -(IBAction)myAction:(id)sender{
 
     ChallengeTaskButton *chbutton = (ChallengeTaskButton *)sender;
@@ -697,26 +734,14 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     NSLog(@"Selected row is: %d",taskNum);
     UIImage *checkImage = [UIImage imageNamed:@"CheckIcon.png"];
     Task *task1 = [profile.todaysChallenge.tasks objectAtIndex:taskNum];
-    //NSString * completedText = @"";
     
     if(task1.completed)
     {
-        task1.completed = false;
-        [chbutton setImage:NULL forState:normal];
-        profile.score -= task1.points;
-        profile.todaysChallenge.pointsLeft += task1.points;
-        [self doChallengeIncompletedUISetup];
+        [self taskUncompleted:task1 chbutton:chbutton];
     }
     else
     {
-        task1.completed = true;
-        [chbutton setImage:checkImage forState:normal];
-        profile.score += task1.points;
-        profile.todaysChallenge.pointsLeft -= task1.points;
-        if(profile.todaysChallenge.completed)
-        {
-            [self doChallengeCompletedUISetup];
-        }
+        [self taskCompleted:task1 checkImage:checkImage chbutton:chbutton];
 //        if(profile.todaysChallenge.pointsLeft <= 0)
 //        {
 //            //profile.todaysChallenge.completed = true;

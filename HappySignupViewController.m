@@ -48,11 +48,16 @@
 //***********************************************************
 - (IBAction)facebookSignUpButtonClick:(id)sender
 {
+
     NSArray *permissions = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
     //Testing
-    PFUser *user = [PFUser user];
-    [PFUser logOut];
+     //PFUser *user = [PFUser user];
+//    [PFUser logOut];
    // user = [PFUser user];
+    [FBSession.activeSession close];
+    [FBSession.activeSession closeAndClearTokenInformation];
+    FBSession.activeSession = nil;
+    
     [PFFacebookUtils logInWithPermissions:permissions block:^(PFUser *user, NSError *error) {
         if (!user)
         {
@@ -85,11 +90,12 @@
                              cancelButtonTitle:@"OK"
                              otherButtonTitles:nil];
             [alert show];
-
-            //[self passed];
+            self.profile = [[HappyProfile alloc] initWithType:@"Facebook New User"];
+            [self facebookRequestUserProfile];
         }
         else
         {
+            self.profile = [[HappyProfile alloc] initWithType:@"Facebook Existing User"];
             NSLog(@"User logged in through Facebook!");
             NSString *message = @"User logged in through Facebook!";
             UIAlertView *alert =
@@ -176,7 +182,7 @@
                  
                  NSMutableDictionary *userProfile = [NSMutableDictionary dictionaryWithCapacity:10];
                  
-                 self.profile = [[HappyProfile alloc] init];
+                 //self.profile = [[HappyProfile alloc] init];
                  
                  if (facebookID) {
                      userProfile[@"facebookId"] = facebookID;
@@ -362,15 +368,14 @@
     
     user.username = email;
     user.password = pass;
-    
-    //
+    //self.profile = [[HappyProfile alloc] init];
     // Signing up the new user to check if the user is not there already
     //
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error)
         {
             NSLog(@"New user signup for the first time");
-            
+            self.profile = [[HappyProfile alloc] initWithType:@"iBeHappy Native New User"];
             [self passed];
         }
         else
@@ -386,6 +391,7 @@
                                                 if (user)
                                                 {
                                                     NSLog(@"User exists so we can continue");
+            self.profile = [[HappyProfile alloc] initWithType:@"iBeHappy Native Existing User"];  
                                                     [self passed];
                                                 }
                                                 else
@@ -401,13 +407,13 @@
 
 - (void)passed
 {
-    HappyProfile *profile = [Utility unarchiveProfile];
-    if(profile != NULL && profile.profileCompleted)
+    //HappyProfile *profile = [Utility unarchiveProfile];
+    if(self.profile != NULL && self.profile.profileCompleted)
     {
       HappyChallengeViewController *challengeViewController = [[HappyChallengeViewController alloc] initWithNibName:@"HappyChallengeViewController"
                                                                          bundle:nil];
         
-        challengeViewController.profile = profile;
+        challengeViewController.profile = self.profile;
         [self presentViewController:challengeViewController animated:YES completion:nil];
         //challengeVC.profile = profile;
         challengeViewController = nil;

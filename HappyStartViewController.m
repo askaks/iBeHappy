@@ -109,8 +109,13 @@
 - (IBAction)logoutButtonTouchHandler:(id)sender {
     // Logout user, this automatically clears the cache
     [PFUser logOut];
+    //[[PFFacebookUtils session] closeAndClearTokenInformation];
+    //PFUser *user;
+    //[PFFacebookUtils unlinkUser:PFUser currentUser];
     [self fbDidLogout];
-    // Return to login view controller
+    [FBSession.activeSession close];
+    [FBSession.activeSession closeAndClearTokenInformation];
+    FBSession.activeSession = nil;    // Return to login view controller
     HappySignupViewController *signInVC = [[HappySignupViewController alloc] initWithNibName:@"HappySignupViewController"
                                                                                       bundle:nil];
     

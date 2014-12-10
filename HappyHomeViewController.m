@@ -7,6 +7,7 @@
 //
 
 #import "HappyHomeViewController.h"
+#import <Parse/Parse.h>
 
 @interface HappyHomeViewController ()
 
@@ -101,7 +102,7 @@
 {
     if(currentStatus == newUser)
     {
-        self.helloUserText.text = @"Uh Oh - it looks like you're profile is empty!  Create a new profile by clicking 'START' so iBeHappy can get to know you and pick out some challenges for you!";
+        self.helloUserText.text = @"No Challenges were loaded because you're profile is empty!  Click 'START' to create your profile so iBeHappy can get to know you and pick out some challenges for you!";
         //[self.startOverButton setTitle:@"Start" forState:UIControlStateNormal];
         self.startOverButton.enabled = true;
         self.startOverButton.userInteractionEnabled = true;
@@ -119,31 +120,31 @@
     else if (currentStatus == noChallengesCompleted) {
         if(![profile.name isEqualToString:@""])
         {
-            self.helloUserText.text = [NSString stringWithFormat:@"%@, you haven't completed any challenges yet.", profile.name];
+            self.helloUserText.text = [NSString stringWithFormat:@"%@, you haven't completed any of your %d challenges loaded.", profile.name, profile.challenges.count];
         }
         else
         {
-            self.helloUserText.text = [NSString stringWithFormat:@"You haven't completed any challenges yet."];
+            self.helloUserText.text = [NSString stringWithFormat:@"You haven't completed any of your %d challenges loaded.", profile.challenges.count];
         }
     }
     else if (currentStatus == oneChallengeCompleted) {
         if(![profile.name isEqualToString:@""])
         {
-            self.helloUserText.text = [NSString stringWithFormat:@"%@, so far you have completed one challenge out of %d viewed.", profile.name, profile.numOfViewedChallenges];
+            self.helloUserText.text = [NSString stringWithFormat:@"%@, so far you have completed one challenge out of %d viewed, out of your %d challenges loaded.", profile.name, profile.numOfViewedChallenges, profile.challenges.count];
         }
         else
         {
-            self.helloUserText.text = [NSString stringWithFormat:@"So far you have completed one challenge out of %d viewed.", profile.numOfViewedChallenges];
+            self.helloUserText.text = [NSString stringWithFormat:@"So far you have completed one challenge out of %d viewed, out of your %d challenges loaded.", profile.numOfViewedChallenges, profile.challenges.count];
         }
     }
     else if (currentStatus == someChallengesCompleted) {
         if(![profile.name isEqualToString:@""])
         {
-            self.helloUserText.text = [NSString stringWithFormat:@"%@, so far you have completed %d challenges out of %d viewed.", profile.name, profile.numOfCompletedChallenges, profile.numOfViewedChallenges];
+            self.helloUserText.text = [NSString stringWithFormat:@"%@, so far you have completed %d challenges out of %d viewed, out of your %d challenges loaded.", profile.name, profile.numOfCompletedChallenges, profile.numOfViewedChallenges, profile.challenges.count];
         }
         else
         {
-            self.helloUserText.text = [NSString stringWithFormat:@"So far you have completed %d challenges out of %d viewed.", profile.numOfCompletedChallenges, profile.numOfViewedChallenges];
+            self.helloUserText.text = [NSString stringWithFormat:@"So far you have completed %d challenges out of %d viewed, out of your %d challenges loaded.", profile.numOfCompletedChallenges, profile.numOfViewedChallenges,profile.challenges.count];
         }
     }
     else if (currentStatus == done) {
@@ -219,6 +220,9 @@
     
     //"Ok" appears on Start/Start Over Button UIAlertView
     if ([title isEqualToString:@"Ok"]) {
+        
+        PFUser *currentUser = [PFUser currentUser];
+        [currentUser delete];
         NSString *filePath =  [Utility profilePath];
         
         NSError *error = nil;
@@ -293,10 +297,6 @@
     self.startOver = true;
     
     HappySignupViewController *happySignupViewController = [[HappySignupViewController alloc]  initWithNibName:@"HappySignupViewController" bundle:nil];
-    //self.window.rootViewController = happySignupViewController;
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-//    UINavigationController *navig = [storyboard instantiateViewControllerWithIdentifier:@"705"];
-	// viewDidLoad will be called
     [self presentViewController:happySignupViewController animated:YES completion:nil];
     //self.happySignupViewController = nil;
 }
@@ -304,10 +304,15 @@
 -(void)startover
 {
     self.startOver = true;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    UINavigationController *navig = [storyboard instantiateViewControllerWithIdentifier:@"705"];
-	// viewDidLoad will be called
-	[self presentViewController:(UIViewController *)navig animated:YES completion:^{[self animationCompleted];}];
+    //SAME AS START
+    HappySignupViewController *happySignupViewController = [[HappySignupViewController alloc]  initWithNibName:@"HappySignupViewController" bundle:nil];
+    [self presentViewController:happySignupViewController animated:YES completion:nil];
+    
+    
+    //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+//    UINavigationController *navig = [storyboard instantiateViewControllerWithIdentifier:@"705"];
+//	// viewDidLoad will be called
+//	[self presentViewController:(UIViewController *)navig animated:YES completion:^{[self animationCompleted];}];
 }
 
 
