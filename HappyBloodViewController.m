@@ -306,7 +306,7 @@ rowHeightForComponent:(NSInteger)component
     {
         childrenSelectionText.text = profile.kids;
         int i;
-        i = [types indexOfObject:profile.kids];
+        i = (int)[types indexOfObject:profile.kids];
         if (i>-1 && i < types.count) {
             index = i;
         }
@@ -324,7 +324,7 @@ rowHeightForComponent:(NSInteger)component
     {
         petSelectinText.text = profile.pets;
         int i;
-        i = [petStatuses indexOfObject:profile.pets];
+        i = (int)[petStatuses indexOfObject:profile.pets];
         if (i>-1 && i < petStatuses.count) {
             index = i;
         }

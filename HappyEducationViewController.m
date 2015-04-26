@@ -189,7 +189,7 @@ rowHeightForComponent:(NSInteger)component
 {
     //	int curr_index = row;
 	
-	int curr_index = [pickerView selectedRowInComponent:0];
+	int curr_index = (int)[pickerView selectedRowInComponent:0];
 	
 	profile.education = [types objectAtIndex: curr_index];
     educationSelectionText.text = profile.education;

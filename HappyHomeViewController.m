@@ -120,7 +120,7 @@
     else if (currentStatus == noChallengesCompleted) {
         if(![profile.name isEqualToString:@""])
         {
-            self.helloUserText.text = [NSString stringWithFormat:@"%@, you haven't completed any of your %d challenges loaded.", profile.name, profile.challenges.count];
+            self.helloUserText.text = [NSString stringWithFormat:@"%@, you haven't completed any of your %zd challenges loaded.", profile.name, profile.challenges.count];
         }
         else
         {

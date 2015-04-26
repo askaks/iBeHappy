@@ -251,8 +251,8 @@
             <rect key="frame" x="0.0" y="0.0" width="92" height="29"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <segments>
-                <segment title="" image="CheckIcon6.png"/>
-                <segment title="" image="XIcon6.png"/>
+                <segment title=""/>
+                <segment title=""/>
             </segments>
             <connections>
                 <action selector="isCompletedChange:" destination="-1" eventType="valueChanged" id="54"/>
@@ -262,11 +262,9 @@
     <resources>
         <image name="ButtonBiggerLimeGradientHighRaisedButton.png" width="196" height="80"/>
         <image name="CheckBoxWhiteUnCheckedSmooth.png" width="64" height="64"/>
-        <image name="CheckIcon6.png" width="16" height="16"/>
         <image name="Icon.png" width="57" height="57"/>
         <image name="MiddleBackgroundWhiteHalfRound.png" width="760" height="980"/>
         <image name="TopWhitishBanner.png" width="640" height="88"/>
-        <image name="XIcon6.png" width="16" height="16"/>
         <image name="color challenges button.png" width="529" height="589"/>
         <image name="color house button.png" width="539" height="550"/>
         <image name="color settings button.png" width="641" height="643"/>

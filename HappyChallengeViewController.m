@@ -360,6 +360,35 @@
 }
 
 #pragma mark - Loading Challenges into ChallengeViewController
+- (void)scheduleTaskNotification:(Task*)tsk
+{
+    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+    if (localNotif == nil)
+        return;
+    // Convert string to date object
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ"];
+    NSDate *date = [dateFormat dateFromString:tsk.time];
+    localNotif.fireDate =date;
+    localNotif.timeZone = [NSTimeZone defaultTimeZone];
+    
+    // Notification details
+    localNotif.alertBody = tsk.message;
+    // Set the action button
+    localNotif.alertAction = @"View";
+    
+    localNotif.soundName = UILocalNotificationDefaultSoundName;
+    localNotif.applicationIconBadgeNumber = 0;
+    
+    // Specify custom data for the notification
+    NSDictionary *infoDict = [NSDictionary dictionaryWithObject:@"someValue" forKey:@"someKey"];
+    localNotif.userInfo = infoDict;
+    
+    // Schedule the notification
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+    //[localNotif release];
+}
+
 - (BOOL)getNewChallengeForToday
 {
     bool isChallengeAvailable = false;
@@ -387,10 +416,29 @@
                 isChallengeAvailable = true;
             }
             profile.maximumPossibleScore += profile.todaysChallenge.pointsLeft;
-            profile.notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
-            profile.notification.alertBody = profile.todaysChallenge.description;
-            profile.notification.hasAction = true;
-            profile.notification.timeZone = [NSTimeZone localTimeZone];
+            //Notifications
+            for(Task *tsk in profile.todaysChallenge.tasks)
+            {
+                NSDate *now = [[NSDate alloc] init];
+                NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+                NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:now];
+                components = [calendar components: NSCalendarUnitYear | NSCalendarUnitMonth|NSCalendarUnitDay | NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:now];
+                NSInteger mins = [components minute];
+                [components setMinute:(mins + 3)];
+                NSString *nowString;
+
+                NSDateFormatter *dateFormat;
+                dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ"]; // has to be same format
+                nowString = [dateFormat stringFromDate:[calendar dateFromComponents:components]];
+                tsk.time = nowString;
+                [self scheduleTaskNotification:tsk];
+            }
+
+//            profile.notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
+//            profile.notification.alertBody = profile.todaysChallenge.description;
+//            profile.notification.hasAction = true;
+//            profile.notification.timeZone = [NSTimeZone localTimeZone];
         }
     }
     return isChallengeAvailable;
@@ -653,7 +701,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"PlayerCell" owner:self options:nil] lastObject];
     // Configure the cell...
-	int i = indexPath.row;
+	int i = (int)indexPath.row;
     UITextView *score = (UITextView *)[cell viewWithTag:603];
     index = i;
     ChallengeTaskButton* chbutton =  (ChallengeTaskButton *) [cell viewWithTag:606];
@@ -667,8 +715,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     Task *task1 = [profile.todaysChallenge.tasks objectAtIndex:i];
 
     //Expression result seems to be used in delegate...
-    score.text = (
-                  @"Task %d : %s",i, task1.message);
+    score.text = (@"Task %d : %s",i, task1.message);
     if(task1.completed)
     {
         UIImage *checkImage = [UIImage imageNamed:@"CheckIcon.png"];
@@ -676,7 +723,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     }
     
     
-    NSString *pointsDisplay = [NSString stringWithFormat:@"(%d)", task1.points];
+    NSString *pointsDisplay = [NSString stringWithFormat:@"(%ld)", (long)task1.points];
     UILabel *pointsLabel = (UILabel *)[cell viewWithTag:111];
     pointsLabel.text = pointsDisplay;
     pointsLabel.textColor = [UIColor orangeColor];
@@ -692,8 +739,8 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     closeFullTaskText.hidden = false;
     [closeFullTaskText addTarget:self action:@selector(closeTextView:) forControlEvents:UIControlEventTouchDown];
     ChallengeTaskButton *chbutton = (ChallengeTaskButton *)sender;
-    int taskNum = chbutton.taskNumber;
-    NSLog(@"Selected row is: %d",taskNum);
+    NSInteger taskNum = chbutton.taskNumber;
+    NSLog(@"Selected row is: %zd",taskNum);
     Task *task1 = [profile.todaysChallenge.tasks objectAtIndex:taskNum];
     
     fullTaskText.text = task1.message;
