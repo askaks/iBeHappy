@@ -59,9 +59,14 @@
 @property (nonatomic, strong) NSMutableData *imageData;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *helpButton;
+
 - (IBAction)Reminders:(id)sender;
 - (IBAction)Home:(id)sender;
 - (IBAction)changeDate;
 - (IBAction)doneAction:(id)sender;
+- (IBAction)logoutButtonTouchHandler:(id)sender;
+
+
 
 @end

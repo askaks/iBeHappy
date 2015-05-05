@@ -102,7 +102,7 @@
 {
     if(currentStatus == newUser)
     {
-        self.helloUserText.text = @"No Challenges were loaded because you're profile is empty!  Click 'START' to create your profile so iBeHappy can get to know you and pick out some challenges for you!";
+        self.helloUserText.text = @"Hello...  Click START to create a profile and get started!";
         //[self.startOverButton setTitle:@"Start" forState:UIControlStateNormal];
         self.startOverButton.enabled = true;
         self.startOverButton.userInteractionEnabled = true;

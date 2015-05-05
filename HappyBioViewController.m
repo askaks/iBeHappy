@@ -313,6 +313,51 @@
     }
     return self;
 }
+
+- (IBAction)logoutButtonTouchHandler:(id)sender {
+    // Logout user, this automatically clears the cache
+    [PFUser logOut];
+    //[[PFFacebookUtils session] closeAndClearTokenInformation];
+    //PFUser *user;
+    //[PFFacebookUtils unlinkUser:PFUser currentUser];
+    [self fbDidLogout];
+    [FBSession.activeSession close];
+    [FBSession.activeSession closeAndClearTokenInformation];
+    FBSession.activeSession = nil;    // Return to login view controller
+    HappySignupViewController *signInVC = [[HappySignupViewController alloc] initWithNibName:@"HappySignupViewController"
+                                                                                      bundle:nil];
+    
+    signInVC.signupWelcomeMessageText.text = @"You've been successfuully logged out.  Please relogin to Facebook or create a new profile to continue.";
+    
+    // viewDidLoad will be called
+    //[self presentModalViewController:signInVC animated:YES];
+    [self presentViewController:signInVC animated:YES completion:nil];
+}
+
+- (void)fbDidLogout
+{
+    NSLog(@"Logged out of facebook");
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies])
+    {
+        NSString* domainName = [cookie domain];
+        NSRange domainRange = [domainName rangeOfString:@"facebook"];
+        if(domainRange.length > 0)
+        {
+            [storage deleteCookie:cookie];
+        }
+    }
+    if (FBSession.activeSession.isOpen)
+    {
+        [FBSession.activeSession closeAndClearTokenInformation];
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObjectForKey:@"FBAccessTokenKey"];
+    [defaults removeObjectForKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+}
+
 - (void)viewDidUnload
 {
 //    [self setAgeText:nil];

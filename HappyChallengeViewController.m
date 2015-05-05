@@ -311,7 +311,7 @@
         self.challengeTitleLabel.text = @"No Challenge Loaded";
         self.forPointsLabel.text = @"Points Worth: 0";
         self.pointsEarnedLabel.text = @"Points Earned: 0";
-        self.challengeStatusText.text = @"No Challenges Loaded because your profile is incomplete!";
+        self.challengeStatusText.text = @"You must be new, createa  profile to find your challenges.";
         //self.challengeStatusText. = true;
         self.challengeStatusText.hidden = false;
     }
