@@ -123,8 +123,8 @@
         _remindersOn = false;
         _currentChallengeDate = @"1900,01,01";
         _notification  = [[UILocalNotification alloc] init];
-        _kids = @"none";
-        _pets = @"none";
+        _kids = @"None";
+        _pets = @"None";
         _language = 1;
         _personality = 1;
         _level = 0;
@@ -190,8 +190,8 @@
         _remindersOn = false;
         _currentChallengeDate = @"1900,01,01";
         _notification  = [[UILocalNotification alloc] init];
-        _kids = @"none";
-        _pets = @"none";
+        _kids = @"None";
+        _pets = @"None";
         _language = 1;
         _personality = 1;
         _level = 0;
@@ -282,10 +282,10 @@
     NSString * kidsString = [NSString stringWithFormat:@"Kids: %@ \n ", self.kids];
     NSString * petsString = [NSString stringWithFormat:@"Pets: %@ \n ", self.pets];
     
-    NSString * languageSettingString = [NSString stringWithFormat:@"Bold Language Preferance: %d out of 10\n ", self.language];
-    NSString * personalitySettingString = [NSString stringWithFormat:@"Bold Personality: %d out of 10 \n ", self.personality];
+    NSString * languageSettingString = [NSString stringWithFormat:@"Bold Language Preferance: %ld out of 10\n ", (long)self.language];
+    NSString * personalitySettingString = [NSString stringWithFormat:@"Bold Personality: %ld out of 10 \n ", (long)self.personality];
     
-    NSString * happinessIndexString = [NSString stringWithFormat:@"Finally and most importantly your happiness index is : %d out of 10 \n ", self.happiness];
+    NSString * happinessIndexString = [NSString stringWithFormat:@"Finally and most importantly your happiness index is : %ld out of 10 \n ", (long)self.happiness];
     
     profileString = [NSString stringWithFormat:@"@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@", nameString, ageString, location,sexString, interestedInString, relationshipString, relationshipContentmentString, educationString, educationContentmentString, incomeString, incomeContentmentString, kidsString, petsString, languageSettingString, personalitySettingString, happinessIndexString];
     return profileString;
