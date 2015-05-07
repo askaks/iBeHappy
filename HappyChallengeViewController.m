@@ -434,11 +434,6 @@
                 tsk.time = nowString;
                 [self scheduleTaskNotification:tsk];
             }
-
-//            profile.notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
-//            profile.notification.alertBody = profile.todaysChallenge.description;
-//            profile.notification.hasAction = true;
-//            profile.notification.timeZone = [NSTimeZone localTimeZone];
         }
     }
     return isChallengeAvailable;
@@ -501,6 +496,7 @@ int randomSort(id obj1, id obj2, void *context ) {
     [challengesQuery whereKey:@"incomeIncludes" containsString:profile.income];
     [challengesQuery whereKey:@"childIncludes" containsString:profile.kids];
     [challengesQuery whereKey:@"petIncludes" containsString:profile.pets];
+    
     NSArray *objects = nil;
     objects = [challengesQuery findObjects];
     if (objects != NULL)
@@ -545,10 +541,8 @@ int randomSort(id obj1, id obj2, void *context ) {
 -(DailyChallenge*) findAndAddTasks:(PFObject *) challengeObject :(DailyChallenge *) dailyChallenge {
     NSLog(@"Title of Challenge to Get Tasks of: %@", dailyChallenge.title);
     PFQuery *taskQuery = [PFQuery queryWithClassName:@"Tasks"];
-    //PFObject *challengeid = challengeObject[@"objectId"];
-    //[taskQuery whereKey:@"parentChallenge" equalTo:(NSString*)(challengeid)];
     [taskQuery whereKey:@"parentChallenge" equalTo:challengeObject];
-    NSArray *objects = [taskQuery findObjects]; //]:^(NSArray *objects, NSError *error){
+    NSArray *objects = [taskQuery findObjects];
     dailyChallenge.tasks = [[NSMutableArray alloc] init];
     dailyChallenge.pointsLeft = 0;
     if (objects != NULL || objects.count == 0)
@@ -557,6 +551,8 @@ int randomSort(id obj1, id obj2, void *context ) {
         {
             NSString *actionObj = objTasks[@"action"];
             NSNumber *pointObj = objTasks[@"points"];
+            
+            //Boolean b = (Boolean) objTasks[@"timeSpecific"];
             NSLog(@"ageMinObs: %@", actionObj);
             Task *task1  = [[Task alloc] initWithMessageAndPoints:actionObj points:[pointObj integerValue]];
             dailyChallenge.pointsLeft += task1.points;
@@ -580,98 +576,6 @@ int randomSort(id obj1, id obj2, void *context ) {
     
 }
 
-
-
-
-
-//- (IBAction)isCompletedChange:(id)sender {
-//      if (completedChallengeSegment.selectedSegmentIndex == 0) {
-//        profile.score += profile.todaysChallenge.pointsLeft;
-//        self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points just earned: %d", profile.todaysChallenge.pointsLeft];
-//     //profile.todaysChallenge.completed = true;
-//          profile.numOfCompletedChallenges += 1;
-//          [self doChallengeCompletedUISetup];
-////          self.challengeStatusLabel.hidden = false;
-////          self.challengeStatusLabel.text = @"Challenge Completed!";
-////          self.challengeStatusLabel.textColor = [UIColor blueColor];
-//      }
-//      else
-//    {
-//        profile.numOfCompletedChallenges -= 1;
-//         //profile.todaysChallenge.completed = false;
-//          profile.score -= profile.todaysChallenge.pointsLeft;
-//          self.pointsEarnedLabel.text = [NSString stringWithFormat:@"Points earned: 0"];
-//        [self doChallengeIncompletedUISetup];
-//          //self.challengeStatusLabel.hidden = true;
-//      }
-//}
-
-//- (BOOL)shouldAddChallenge
-//{
-//    
-//    NSDate *now = [[NSDate alloc] init];
-//    NSDateFormatter *dateFormat;
-//    dateFormat = [[NSDateFormatter alloc] init];
-//    [dateFormat setDateFormat:@"MMMM d, yyyy"];
-//    
-//    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//
-//    NSDateComponents *components = [gregorianCalendar components: (NSYearCalendarUnit )
-//                                                        fromDate:profile.birthDay
-//                                                          toDate:now                                                         options:nil];
-//   NSInteger currentAge = [components year];
-//    
-//    bool addChallenge = true;
-//    if (challenge.ageMax.intValue < currentAge) {
-//        addChallenge = false;
-//    }
-//    else if (challenge.ageMin.intValue > currentAge) {
-//        addChallenge = false;
-//    }
-//    
-//    else if([challenge.genderExcludes containsObject:profile.sex])
-//    {
-//        addChallenge = false;
-//    }
-//    else if([challenge.interestedInExcludes containsObject:profile.seeking])
-//    {
-//        addChallenge = false;
-//    }
-//    
-//    else if([challenge.schoolHappyExcludes containsObject:profile.keepStudying])
-//    {
-//        addChallenge = false;
-//    }
-//    else if([challenge.schoolLevelExcludes containsObject:profile.education])
-//    {
-//        addChallenge = false;
-//    }
-//    else if([challenge.workLevelExcludes containsObject:profile.income])
-//    {
-//        addChallenge = false;
-//    }
-//    else if([challenge.workHappyExcludes containsObject:profile.jobAttitude])
-//    {
-//        addChallenge = false;
-//    }
-//    else if([challenge.relationshipExcludes containsObject:profile.relation])
-//    {
-//        addChallenge = false;
-//    }
-//    else if([challenge.happyWithRelationship isEqual:profile.relationshipContentment])
-//    {
-//        addChallenge = false;
-//    }
-//    else if([challenge.kidsExclude containsObject:profile.kids])
-//    {
-//        addChallenge = false;
-//    }
-//    else if([challenge.petsExclude containsObject:profile.pets])
-//    {
-//        addChallenge = false;
-//    }
-//    return addChallenge;
-//}
 
 #pragma mark -
 #pragma mark Tasks: Table view data source
